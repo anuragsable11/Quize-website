@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Scorecard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f5f5f5;
+    }
+    .sidebar {
+      background-color: #1A237E;
+      color: white;
+      height: 100vh;
+      padding: 30px 20px;
+    }
+    .sidebar h4 {
+      margin-top: 15px;
+    }
+    .nav-link {
+      color: white;
+      font-size: 16px;
+    }
+    .nav-link:hover {
+      color: #FFEB3B;
+    }
+    .profile-img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .score-box {
+      background: #fff;
+      padding: 10px 20px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+  <div class="d-flex">
+    <!-- Sidebar -->
+    <div class="sidebar d-flex flex-column align-items-center text-center">
+      <!-- Profile image with dropdown -->
+<div class="position-relative text-center">
+  <img id="profileImage" src="https://i.pravatar.cc/100" class="profile-img mb-2" alt="Profile" style="cursor: pointer;" />
+  <h4 id="userName">Username</h4>
+  <div id="profileMenu" class="position-absolute bg-white text-dark rounded shadow p-2"
+       style="display:none; top: 110px; left: 50%; transform: translateX(-50%); z-index: 10;">
+    <a href="edit-profile.html" class="d-block text-decoration-none text-dark">✏️ Edit Profile</a>
+  </div>
+</div>
+
+      <nav class="nav flex-column mt-4 w-100">
+        <a class="nav-link" href="#">📊 Scorecard</a>
+        <a class="nav-link" href="#">📈 Improvement</a>
+        <a class="nav-link text-danger" href="login.html">🚪 Logout</a>
+      </nav>
+    </div>
+
+    <!-- Main content -->
+    <div class="flex-grow-1 p-4">
+      <h2>📊 Your Scorecard</h2>
+      <div id="scoreList" class="mt-3"></div>
+
+      <h3 class="mt-5">📈 Your Improvement</h3>
+      <canvas id="scoreChart" height="100"></canvas>
+    </div>
+  </div>
+
+  <script>
+    const loggedInUser = localStorage.getItem("loggedInUser");
+    document.getElementById("userName").innerText = loggedInUser || "Guest";
+
+    const allScores = JSON.parse(localStorage.getItem("scoreList")) || [];
+    const userScores = allScores.filter(score => score.name === loggedInUser);
+
+    const scoreListDiv = document.getElementById("scoreList");
+    if (userScores.length === 0) {
+      scoreListDiv.innerHTML = "<p>No scores yet. Play a quiz!</p>";
+    } else {
+      scoreListDiv.innerHTML = userScores.map((s, i) =>
+        `<div class="score-box">Attempt #${i + 1}: <strong>${s.score}</strong></div>`
+      ).join("");
+
+      const labels = userScores.map((_, i) => `Attempt ${i + 1}`);
+      const scores = userScores.map(s => parseInt(s.score.split('/')[0]));
+
+      new Chart(document.getElementById('scoreChart').getContext('2d'), {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [{
+            label: 'Scores',
+            data: scores,
+            borderColor: '#4caf50',
+            backgroundColor: 'rgba(76, 175, 80, 0.2)',
+            tension: 0.4,
+            fill: true
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+              suggestedMax: 10
+            }
+          }
+        }
+      });
+    }
+  </script>
+  <script>
+    // Show dropdown menu when clicking profile image
+    const profileImage = document.getElementById("profileImage");
+    const profileMenu = document.getElementById("profileMenu");
+  
+    profileImage.addEventListener("click", () => {
+      profileMenu.style.display = profileMenu.style.display === "block" ? "none" : "block";
+    });
+  
+    // Optional: Hide menu when clicking outside
+    document.addEventListener("click", function (e) {
+      if (!profileImage.contains(e.target) && !profileMenu.contains(e.target)) {
+        profileMenu.style.display = "none";
+      }
+    });
+    const profilePic = localStorage.getItem("loggedInProfile");
+document.getElementById("profileImage").src = profilePic || "https://i.pravatar.cc/100";
+
+  </script
+</body>
+
+</html>
+
