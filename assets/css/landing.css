@@ -20,6 +20,23 @@
   z-index: 1;
   max-width: 820px;
 }
+.hero-logo {
+  display: block;
+  width: 104px;
+  height: 104px;
+  margin: 0 auto 16px;
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.35));
+  animation: float 6s ease-in-out infinite;
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-logo {
+    animation: none;
+  }
+}
 .hero-badge {
   display: inline-block;
   background: rgba(255, 255, 255, 0.15);
@@ -144,6 +161,10 @@
   }
   .hero h1 {
     font-size: 2rem;
+  }
+  .hero-logo {
+    width: 80px;
+    height: 80px;
   }
   .hero-stats {
     gap: 24px;

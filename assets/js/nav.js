@@ -14,8 +14,9 @@
   header.innerHTML = `
     <nav class="navbar navbar-expand-md site-nav" data-bs-theme="dark">
       <div class="container">
-        <a class="navbar-brand" href="index.html">
-          <span class="brand-icon">?</span>Quiz Platform<span class="brand-tag">AVA</span>
+        <a class="navbar-brand" href="index.html" aria-label="Quizverse home">
+          <img class="brand-logo" src="assets/img/logo.svg" alt="" width="38" height="38">
+          <span class="brand-name">Quiz<span class="brand-accent">verse</span></span>
         </a>
         <button class="navbar-toggler" type="button" id="nav-toggler" aria-controls="site-nav-links" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>

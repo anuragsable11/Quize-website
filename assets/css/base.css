@@ -107,30 +107,25 @@ main {
   top: 0;
   z-index: 1000;
 }
+/* Brand: planet logo + "Quizverse" wordmark with "verse" in the accent colour */
 .site-nav .navbar-brand {
   color: #fff;
-  font-weight: 700;
-  letter-spacing: 0.5px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
-.brand-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: #fff;
-  color: var(--brand-primary);
+.brand-logo {
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+}
+.brand-name {
+  font-size: 1.4rem;
   font-weight: 700;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+  letter-spacing: 0.3px;
 }
-.brand-tag {
+.brand-accent {
   color: var(--brand-accent);
-  font-size: 0.8rem;
-  letter-spacing: 2px;
 }
 .site-nav .nav-link {
   color: rgba(255, 255, 255, 0.85);

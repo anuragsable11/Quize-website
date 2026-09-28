@@ -1,6 +1,10 @@
-# Quize-website
+<p align="center">
+  <img src="assets/img/logo.svg" alt="Quizverse logo" width="96" height="96" />
+</p>
 
-An interactive quiz web app built with plain HTML, CSS and JavaScript. Questions come from the [Open Trivia Database](https://opentdb.com/).
+# Quizverse
+
+**A universe of trivia.** An interactive quiz website built with plain HTML, CSS and JavaScript. Questions come from the [Open Trivia Database](https://opentdb.com/).
 
 ## Features
 
@@ -32,7 +36,8 @@ Quize-website/
 │   scorecard.html, edit-profile.html, users.html
 └── assets/
     ├── img/
-    │   └── favicon.svg
+    │   ├── logo.svg              # Logo mark, also used as the favicon
+    │   └── apple-touch-icon.png  # 180×180 home-screen icon for phones
     ├── css/
     │   ├── base.css          # Design tokens, dark mode, nav bar, cards, footer (every page)
     │   ├── landing.css
@@ -56,6 +61,23 @@ Quize-website/
 ```
 
 Every page loads Bootstrap, then `base.css`, then its own stylesheet; and `storage.js` + `theme.js` in the `<head>`, then `nav.js` + its own script at the end of `<body>`.
+
+## Brand
+
+- **Name:** Quizverse (one word, capital Q). In the wordmark, "verse" is set in the accent pink.
+- **Tagline:** A universe of trivia.
+- **Logo:** `assets/img/logo.svg`, a planet with an orbit ring and a question mark. It works on light, dark and gradient backgrounds, so don't put it on a coloured tile.
+- **Font:** [Poppins](https://fonts.google.com/specimen/Poppins), weights 400–700.
+- **Colours** (defined as CSS variables in `assets/css/base.css`):
+
+| Role      | Hex       | Variable             |
+| --------- | --------- | -------------------- |
+| Primary   | `#1A237E` | `--brand-primary`    |
+| Secondary | `#6A1B9A` | `--brand-secondary`  |
+| Accent    | `#FF4081` | `--brand-accent`     |
+| Highlight | `#FFD54F` | star in the logo     |
+
+The site-wide gradient runs from primary to secondary (`--brand-gradient`).
 
 ## Running locally
 

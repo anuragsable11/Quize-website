@@ -13,6 +13,13 @@
   padding: 36px 32px;
 }
 
+.auth-logo {
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 12px;
+}
+
 .auth-card h1 {
   font-weight: 700;
   text-align: center;
