@@ -1,112 +1,111 @@
 <p align="center">
-  <img src="assets/img/logo.svg" alt="Quizverse logo" width="96" height="96" />
+  <img src="public/logo.svg" alt="Quizverse logo" width="72" height="72" />
 </p>
 
 # Quizverse
 
-**A universe of trivia.** An interactive quiz website built with plain HTML, CSS and JavaScript. Questions come from the [Open Trivia Database](https://opentdb.com/).
+**A universe of trivia.** Timed multiple-choice quizzes across 17 categories, with a scorecard that tracks your progress. Questions come from the [Open Trivia Database](https://opentdb.com/).
 
 ## Features
 
-- Landing page with a quick overview and a one-click start
-- Sign up / log in, or play as a guest (accounts live in the browser's `localStorage`)
-- Choose the number of questions, category, difficulty and time per question
-- Timed questions with a countdown beep, instant right/wrong feedback and a final score
-- Scorecard with every attempt, best/average score and an improvement chart
-- Edit profile: change your username and profile photo (photos are resized before saving)
-- Shared navigation bar on every page, with a light/dark theme toggle that's remembered
+- Play as a guest, or sign up / log in to keep scores under your name
+- Choose category, difficulty, number of questions (5–50) and time per question (10–60 s)
+- Instant feedback after each question, and a full answer review at the end
+- Keyboard shortcuts: <kbd>1</kbd>–<kbd>4</kbd> (or <kbd>A</kbd>–<kbd>D</kbd>) to choose, <kbd>Enter</kbd> to submit / continue
+- Scorecard with quizzes played, average and best score, a score-history chart and every attempt
+- Profile settings: change your name and photo (photos are cropped and resized before saving)
+- Light and dark mode (follows your system setting by default), responsive down to phone width
 
-## Pages
+## Tech stack
 
-| Page                | What it does                                              |
-| ------------------- | --------------------------------------------------------- |
-| `index.html`        | Landing page (opens first when deployed)                  |
-| `quiz.html`         | Set up and play a quiz                                    |
-| `login.html`        | Log in                                                    |
-| `signup.html`       | Create an account                                         |
-| `scorecard.html`    | Score history, stats and improvement chart                |
-| `edit-profile.html` | Change username / profile photo                           |
-| `users.html`        | Lists registered users (debug page, not linked from the app) |
+- [React 19](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/), built with [Vite](https://vite.dev/)
+- [Tailwind CSS v4](https://tailwindcss.com/) and [shadcn/ui](https://ui.shadcn.com/) components (Radix primitives)
+- [React Router](https://reactrouter.com/) for pages, [Recharts](https://recharts.org/) (via shadcn charts) for the score history
+- [lucide](https://lucide.dev/) icons, [Sonner](https://sonner.emilkowal.ski/) toasts, [next-themes](https://github.com/pacocoursey/next-themes) for dark mode
+- [Geist](https://vercel.com/font) font, self-hosted via Fontsource
+
+## Getting started
+
+Requires Node.js 20.19+ or 22.12+ (a Vite 8 requirement).
+
+```bash
+npm install       # install dependencies
+npm run dev       # start the dev server at http://localhost:5173
+npm run build     # type-check and build to dist/
+npm run preview   # serve the production build locally
+npm run lint      # lint with oxlint
+```
 
 ## Project structure
 
 ```
 Quize-website/
-├── index.html, quiz.html, login.html, signup.html,
-│   scorecard.html, edit-profile.html, users.html
-└── assets/
-    ├── img/
-    │   ├── logo.svg              # Logo mark, also used as the favicon
-    │   └── apple-touch-icon.png  # 180×180 home-screen icon for phones
-    ├── css/
-    │   ├── base.css          # Design tokens, dark mode, nav bar, cards, footer (every page)
-    │   ├── landing.css
-    │   ├── quiz.css
-    │   ├── auth.css          # Login and sign-up pages
-    │   ├── scorecard.css
-    │   ├── edit-profile.css
-    │   └── users.css
-    └── js/
-        ├── storage.js        # Shared localStorage helpers (every page, in <head>)
-        ├── theme.js          # Light/dark theme (every page, in <head>)
-        ├── nav.js            # Renders the shared navigation bar (every page)
-        ├── particles.js      # Animated background (landing hero and quiz page)
-        ├── landing.js
-        ├── quiz.js           # Quiz logic: fetch questions, timer, scoring
-        ├── login.js
-        ├── signup.js
-        ├── scorecard.js
-        ├── edit-profile.js
-        └── users.js
+├── index.html                 # HTML shell: title, meta tags, favicon
+├── public/                    # Static files copied as-is (logo.svg, apple-touch-icon.png)
+├── src/
+│   ├── main.tsx               # Entry point: theme, auth and toast providers
+│   ├── App.tsx                # Routes
+│   ├── index.css              # Tailwind + shadcn theme (colours, radius, dark mode)
+│   ├── pages/                 # One file per route
+│   │   ├── home.tsx           #   /            landing page
+│   │   ├── quiz.tsx           #   /quiz        quiz state machine (setup → questions → results)
+│   │   ├── scorecard.tsx      #   /scorecard   stats, chart, attempts table
+│   │   ├── profile.tsx        #   /profile     name and photo
+│   │   ├── login.tsx          #   /login
+│   │   ├── signup.tsx         #   /signup
+│   │   └── not-found.tsx      #   any other URL
+│   ├── components/
+│   │   ├── ui/                # shadcn/ui components (generated; update with `npx shadcn add`)
+│   │   ├── layout/            # Site header, footer and page layout
+│   │   ├── quiz/              # Quiz setup, question and results views
+│   │   └── …                  # Logo, avatar, theme toggle, auth card/provider
+│   ├── lib/
+│   │   ├── storage.ts         # localStorage: accounts, session, scores
+│   │   ├── trivia.ts          # Open Trivia DB client, categories, settings
+│   │   ├── auth.ts            # Auth context and useAuth() hook
+│   │   └── media.ts           # Photo resizing and the countdown tick sound
+│   └── hooks/                 # Small shared hooks
+├── components.json            # shadcn/ui configuration
+├── vercel.json                # Build settings, SPA routing and redirects for old .html URLs
+└── vite.config.ts
 ```
 
-Every page loads Bootstrap, then `base.css`, then its own stylesheet; and `storage.js` + `theme.js` in the `<head>`, then `nav.js` + its own script at the end of `<body>`.
+## Deployment
 
-## Brand
+The site is deployed on [Vercel](https://vercel.com/). Pushing to `main` triggers a new deployment, and `vercel.json` tells Vercel to:
 
-- **Name:** Quizverse (one word, capital Q). In the wordmark, "verse" is set in the accent pink.
-- **Tagline:** A universe of trivia.
-- **Logo:** `assets/img/logo.svg`, a planet with an orbit ring and a question mark. It works on light, dark and gradient backgrounds, so don't put it on a coloured tile.
-- **Font:** [Poppins](https://fonts.google.com/specimen/Poppins), weights 400–700.
-- **Colours** (defined as CSS variables in `assets/css/base.css`):
-
-| Role      | Hex       | Variable             |
-| --------- | --------- | -------------------- |
-| Primary   | `#1A237E` | `--brand-primary`    |
-| Secondary | `#6A1B9A` | `--brand-secondary`  |
-| Accent    | `#FF4081` | `--brand-accent`     |
-| Highlight | `#FFD54F` | star in the logo     |
-
-The site-wide gradient runs from primary to secondary (`--brand-gradient`).
-
-## Running locally
-
-No build step or install is needed.
-
-- Open `index.html` directly in your browser, or
-- Serve the folder with any static server, for example:
-
-  ```bash
-  npx serve .
-  # or
-  python -m http.server 8000
-  ```
-
-An internet connection is required: questions are fetched from opentdb.com, and Bootstrap, Font Awesome, Chart.js and the Poppins font load from CDNs. The trivia API allows one request every 5 seconds per IP address; the app shows a message if you start quizzes faster than that.
+- build with `npm run build` and serve the `dist/` folder,
+- send every URL to the app so client-side routes like `/quiz` work on refresh,
+- permanently redirect the old static-site URLs (`/quiz.html`, `/login.html`, …) to the new routes.
 
 ## Data storage
 
-All data lives in the browser's `localStorage` under these keys:
+There is no backend. All data lives in the browser's `localStorage`, under the same keys as the original static site, so existing accounts and scores keep working:
 
-| Key               | Contents                                                        |
-| ----------------- | --------------------------------------------------------------- |
-| `users`           | Registered accounts (name, email, password, profile image)      |
-| `loggedInUser`    | Name of the logged-in user                                      |
-| `loggedInEmail`   | Email of the logged-in user (used to match accounts and scores) |
-| `loggedInProfile` | Profile image of the logged-in user                             |
+| Key               | Contents                                                           |
+| ----------------- | ------------------------------------------------------------------ |
+| `users`           | Registered accounts (name, email, password, profile photo)         |
+| `loggedInUser`    | Name of the logged-in user                                         |
+| `loggedInEmail`   | Email of the logged-in user (used to match accounts and scores)    |
+| `loggedInProfile` | Profile photo of the logged-in user                                |
 | `scoreList`       | Every quiz result: name, email, score, category, difficulty, date |
-| `theme`           | `"light"` or `"dark"` (defaults to your system setting)         |
+| `theme`           | `"light"`, `"dark"` or `"system"`                                  |
 
-Scores of guests are saved under the name `Guest` and shown on the scorecard when nobody is logged in.
+Because everything is stored in the browser, accounts only exist on the device where they were created, and passwords are stored in plain text. Don't use a real password.
 
-This is a front-end demo only. Passwords are stored in plain text in the browser, so don't use real ones.
+## Brand
+
+- **Name:** Quizverse (one word, capital Q). **Tagline:** A universe of trivia.
+- **Logo:** `public/logo.svg`, a "Q" drawn as an orbit ring with a satellite, on an indigo tile. In React use `<Logo />` or `<LogoMark />` from `src/components/logo.tsx`.
+- **Font:** Geist.
+- **Colours** (CSS variables in `src/index.css`; neutrals come from shadcn's neutral palette):
+
+| Role    | Light                   | Dark                    | Variable      |
+| ------- | ----------------------- | ----------------------- | ------------- |
+| Primary | indigo-600 `#4F46E5`    | indigo-500 `#6366F1`    | `--primary`   |
+| Success | emerald-600 `#059669`   | emerald-500 `#10B981`   | `--success`   |
+| Error   | shadcn destructive red  | shadcn destructive red  | `--destructive` |
+
+## Credits
+
+Questions are provided by the [Open Trivia Database](https://opentdb.com/) under the [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) licence.

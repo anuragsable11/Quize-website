@@ -1,144 +1,28 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Quizverse – A universe of trivia</title>
-  <meta name="description" content="Quizverse is a universe of trivia: free timed quizzes across 17 categories, with a scorecard that tracks your progress." />
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Quizverse" />
-  <meta property="og:title" content="Quizverse – A universe of trivia" />
-  <meta property="og:description" content="Free timed quizzes across 17 categories, with a scorecard that tracks your progress." />
-  <meta name="twitter:card" content="summary" />
-  <link rel="icon" href="assets/img/logo.svg" type="image/svg+xml" />
-  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
-  <meta name="theme-color" content="#1A237E" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
-    integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"
-  />
-  <link rel="stylesheet" href="assets/css/base.css" />
-  <link rel="stylesheet" href="assets/css/landing.css" />
-  <script src="assets/js/storage.js"></script>
-  <script src="assets/js/theme.js"></script>
-</head>
-<body>
-  <header id="site-header"></header>
-
-  <main>
-    <!-- Hero -->
-    <section class="hero on-dark">
-      <canvas id="particle-canvas" class="particles-in-parent" data-color="rgba(255, 255, 255, 0.4)"></canvas>
-      <div class="container hero-content text-center">
-        <img src="assets/img/logo.svg" class="hero-logo" alt="" width="104" height="104" />
-        <span class="hero-badge">A universe of trivia · Free to play</span>
-        <h1>Explore the Quiz<span class="brand-accent">verse</span></h1>
-        <p class="lead">
-          Thousands of questions across 17 categories, from science and history to films and video games.
-          Beat the clock, track every score and see how far your knowledge reaches.
-        </p>
-        <div class="hero-actions">
-          <a href="quiz.html" class="btn btn-accent btn-lg">🚀 Start a Quiz</a>
-          <a href="signup.html" id="hero-secondary" class="btn btn-outline-light btn-lg">Create a free account</a>
-        </div>
-        <ul class="hero-stats">
-          <li><strong>17</strong> categories</li>
-          <li><strong>3</strong> difficulty levels</li>
-          <li><strong>50</strong> questions per quiz, max</li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- Features -->
-    <section class="container section" id="features">
-      <h2>What's inside Quizverse</h2>
-      <div class="row g-4">
-        <div class="col-sm-6 col-lg-3">
-          <div class="card feature-card">
-            <div class="feature-icon"><i class="fas fa-layer-group"></i></div>
-            <h3>Pick your topic</h3>
-            <p>From science and history to films, music and video games. Choose a category or mix them all.</p>
-          </div>
-        </div>
-        <div class="col-sm-6 col-lg-3">
-          <div class="card feature-card">
-            <div class="feature-icon"><i class="fas fa-stopwatch"></i></div>
-            <h3>Beat the clock</h3>
-            <p>Set 10 to 60 seconds per question. A countdown beep warns you when time is nearly up.</p>
-          </div>
-        </div>
-        <div class="col-sm-6 col-lg-3">
-          <div class="card feature-card">
-            <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
-            <h3>Track your progress</h3>
-            <p>Every attempt is saved to your scorecard, with your best and average scores and a progress chart.</p>
-          </div>
-        </div>
-        <div class="col-sm-6 col-lg-3">
-          <div class="card feature-card">
-            <div class="feature-icon"><i class="fas fa-moon"></i></div>
-            <h3>Easy on the eyes</h3>
-            <p>Switch between light and dark mode with one click. Your choice is remembered.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- How it works -->
-    <section class="container section" id="how-it-works">
-      <h2>How it works</h2>
-      <div class="row g-4 justify-content-center">
-        <div class="col-md-4">
-          <div class="step">
-            <div class="step-number">1</div>
-            <div>
-              <h3>Set up your quiz</h3>
-              <p>Choose the number of questions, a category, a difficulty and the time per question.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="step">
-            <div class="step-number">2</div>
-            <div>
-              <h3>Answer before time runs out</h3>
-              <p>Pick an answer and submit. You'll see straight away whether you got it right.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="step">
-            <div class="step-number">3</div>
-            <div>
-              <h3>Check your scorecard</h3>
-              <p>Review every attempt and watch your scores climb over time.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Call to action -->
-    <section class="cta-band on-dark">
-      <div class="container">
-        <h2>Ready for liftoff?</h2>
-        <a href="quiz.html" class="btn btn-accent btn-lg">🚀 Start a Quiz</a>
-      </div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    © 2026 Quizverse · Questions by the <a href="https://opentdb.com/" target="_blank" rel="noopener">Open Trivia Database</a>
-  </footer>
-
-  <script src="assets/js/nav.js"></script>
-  <script src="assets/js/landing.js"></script>
-  <script src="assets/js/particles.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quizverse – A universe of trivia</title>
+    <meta
+      name="description"
+      content="Quizverse is a universe of trivia: free timed quizzes across 17 categories, with a scorecard that tracks your progress."
+    />
+    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#09090b" media="(prefers-color-scheme: dark)" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Quizverse" />
+    <meta property="og:title" content="Quizverse – A universe of trivia" />
+    <meta
+      property="og:description"
+      content="Free timed quizzes across 17 categories, with a scorecard that tracks your progress."
+    />
+    <meta name="twitter:card" content="summary" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>

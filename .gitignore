@@ -1,6 +1,20 @@
-# OS files
+# Dependencies and build output
+node_modules
+dist
+dist-ssr
+*.local
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Vercel
+.vercel
+
+# Editor / OS files
+.vscode/*
+!.vscode/extensions.json
+.idea
 .DS_Store
 Thumbs.db
-
-# Dependencies (if a dev server or tooling is added later)
-node_modules/
