@@ -1,200 +1,72 @@
-/* Quiz page styles (index.html). Loaded after Bootstrap so these rules win
-   where the two overlap. Rule order matters within this file too, e.g.
-   .answer.correct and .restart rely on coming after the rules they override. */
+/* Quiz page (quiz.html): start screen, questions, timer and end screen.
+   Rule order matters in places, e.g. .answer.correct and .restart rely on
+   coming after the rules they override. */
 
-@import url(https://fonts.googleapis.com/css?family=Poppins:100,100italic,200,200italic,300,300italic,regular,italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic);
-
-/* ---------- Base ---------- */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
-}
-body {
-  min-height: 100vh;
+.quiz-main {
   display: flex;
-  align-items: center;
   justify-content: center;
-  padding: 80px 16px 40px;
-  background: #fff;
+  align-items: flex-start;
+  padding: 32px 16px 48px;
 }
+
 .quiz-container {
   position: relative;
-  z-index: 10; /* Keeps the content above the particle canvas */
+  z-index: 1; /* above the particle canvas */
   width: 100%;
-  max-width: 1140px;
+  max-width: 1000px;
   background: linear-gradient(to right, #1A237E, #6A1B9A);
+  color: #fff;
   padding: 30px;
   overflow: hidden;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 14px;
+  box-shadow: 0 8px 30px rgba(26, 35, 126, 0.25);
+}
+[data-bs-theme="dark"] .quiz-container {
+  background: linear-gradient(to right, #141a5e, #45106f);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
 }
 
-.heading {
-  text-align: center;
-  font-size: 40px;
-  color: #fff;
-  margin-bottom: 50px;
-}
-label {
-  display: block;
-  font-size: 12px;
-  margin-bottom: 10px;
-  color: #fff;
-}
-.hide {
-  display: none;
-}
-
-/* ---------- Top bar: login/logout link and theme switch ---------- */
-.top-bar {
-  position: fixed;
-  top: 12px;
-  right: 20px;
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 50px;
-  height: 25px;
+/* ---------- Start screen ---------- */
+.screen-title {
+  font-size: 1.75rem;
+  font-weight: 700;
   margin: 0;
 }
-
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  transition: 0.4s;
-  border-radius: 25px;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 19px;
-  width: 19px;
-  left: 3px;
-  bottom: 3px;
-  background-color: white;
-  transition: 0.4s;
-  border-radius: 50%;
-}
-
-input:checked + .slider {
-  background-color: #6A1B9A;
-}
-
-input:checked + .slider:before {
-  transform: translateX(24px);
-}
-
-/* ---------- Start screen: logo, greeting, settings ---------- */
-.logo {
-  display: flex;
-  align-items: center;
-  font-size: 2rem;
-  color: #ffffff;
-  padding-right: 90px; /* room for the AVA badge */
-}
-
-.logo .icon {
-  background-color: #1A237E;
-  color: white;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  flex-shrink: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 2rem;
-  margin-right: 15px;
-  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
-}
-
-.logo .text {
-  font-weight: bold;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-}
-
-.logo1 {
-  font-size: 30px;
-  font-weight: bold;
-  color: #ffffff;
-  display: flex;
-  align-items: center;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  position: absolute;
-  top: 20px;
-  right: 20px;
-}
-
-.logo1 span {
-  color: #FF4081;
-  margin-left: 10px;
-}
-
 #greeting {
-  color: white;
-  font-size: 20px;
-  margin-top: 10px;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 6px 0 0;
 }
 
 .settings {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.92);
   padding: 20px;
-  border-radius: 8px;
+  border-radius: 10px;
+  margin-top: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-
+[data-bs-theme="dark"] .settings {
+  background: rgba(18, 18, 28, 0.75);
+}
 .settings .form-label {
   font-weight: 600;
+  font-size: 12px;
   color: #1A237E;
+  margin-bottom: 8px;
 }
-
-.input-group-text {
+[data-bs-theme="dark"] .settings .form-label {
+  color: #e0e0e0;
+}
+.settings .input-group-text {
   background-color: #6A1B9A;
   color: #fff;
   border: none;
 }
-
-.form-select {
+.settings .form-select {
   font-size: 14px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  transition: all 0.3s ease;
 }
-
-.form-select:focus {
+.settings .form-select:focus {
   border-color: #6A1B9A;
   box-shadow: 0 0 5px #6A1B9A;
-}
-
-.input-group {
-  transition: transform 0.2s ease;
-}
-
-.input-group:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 /* ---------- Quiz buttons ---------- */
@@ -221,7 +93,7 @@ input:checked + .slider:before {
   display: none;
 }
 .start-screen .quiz-btn {
-  margin-top: 30px;
+  margin-top: 24px;
 }
 
 /* ---------- Timer ---------- */
@@ -270,7 +142,7 @@ input:checked + .slider:before {
   margin-bottom: 20px;
 }
 .question-wrapper .number .total {
-  color: #576081;
+  color: #8a93b8;
   font-size: 18px;
 }
 .question-wrapper .question {
@@ -341,10 +213,10 @@ input:checked + .slider:before {
   max-width: 500px;
   margin: auto;
   color: #fff;
-  transition: all 0.3s ease;
 }
 
 .end-screen .heading {
+  text-align: center;
   font-size: 36px;
   font-weight: bold;
   letter-spacing: 2px;
@@ -377,7 +249,7 @@ input:checked + .slider:before {
 .score-feedback .score-text {
   font-size: 24px;
   font-weight: 500;
-  color: #a2aace;
+  color: #dfe3ff;
 }
 
 .restart {
@@ -407,47 +279,6 @@ input:checked + .slider:before {
   }
 }
 
-/* ---------- Dark theme ---------- */
-body.dark-mode {
-  background: #121212;
-  color: #ffffff;
-}
-
-body.dark-mode .quiz-container {
-  background: linear-gradient(to right, #3A3B3C, #1A1A1A);
-}
-
-body.dark-mode .quiz-btn {
-  background: #333333;
-  color: #ffffff;
-}
-
-body.dark-mode .quiz-btn:hover {
-  background: #444444;
-}
-
-body.dark-mode .quiz-btn:disabled {
-  background: #222222;
-  color: #888888;
-}
-
-body.dark-mode .settings {
-  background: rgba(50, 50, 50, 0.8);
-}
-
-body.dark-mode .settings .form-label {
-  color: #e0e0e0;
-}
-
-/* Bootstrap outline button, recoloured so it shows on the dark background */
-body.dark-mode .top-bar .btn {
-  --bs-btn-color: #fff;
-  --bs-btn-border-color: #fff;
-  --bs-btn-hover-bg: #fff;
-  --bs-btn-hover-color: #121212;
-  --bs-btn-hover-border-color: #fff;
-}
-
 /* ---------- Particle background ---------- */
 #particle-canvas {
   position: fixed;
@@ -461,28 +292,14 @@ body.dark-mode .top-bar .btn {
 
 /* ---------- Small screens ---------- */
 @media (max-width: 576px) {
-  body {
-    padding: 70px 12px 30px;
+  .quiz-main {
+    padding: 16px 12px 32px;
   }
   .quiz-container {
     padding: 24px 16px;
   }
-  .logo {
-    font-size: 1.25rem;
-    padding-right: 70px;
-  }
-  .logo .icon {
-    width: 44px;
-    height: 44px;
-    font-size: 1.5rem;
-  }
-  .logo1 {
-    font-size: 20px;
-    top: 14px;
-    right: 14px;
-  }
-  #greeting {
-    font-size: 16px;
+  .screen-title {
+    font-size: 1.4rem;
   }
   .end-screen {
     padding: 30px 16px;

@@ -21,5 +21,5 @@ document.getElementById("loginForm").addEventListener("submit", (e) => {
   }
 
   Store.setSession(user);
-  window.location.href = "index.html";
+  window.location.href = "quiz.html";
 });

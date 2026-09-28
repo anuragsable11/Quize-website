@@ -2,48 +2,87 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Scorecard</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scorecard – Quiz Platform</title>
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap" rel="stylesheet" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+    integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+  <link rel="stylesheet" href="assets/css/base.css" />
   <link rel="stylesheet" href="assets/css/scorecard.css" />
+  <script src="assets/js/storage.js"></script>
+  <script src="assets/js/theme.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <div class="layout d-flex">
-    <!-- Sidebar -->
-    <div class="sidebar d-flex flex-column align-items-center text-center">
-      <!-- Profile image with dropdown -->
-      <div class="position-relative text-center">
-        <img id="profileImage" src="https://i.pravatar.cc/100" class="profile-img mb-2" alt="Profile" />
-        <h4 id="userName">Username</h4>
-        <div id="profileMenu" class="position-absolute bg-white text-dark rounded shadow p-2" style="display:none;">
-          <a id="profileMenuLink" href="edit-profile.html" class="d-block text-decoration-none text-dark">✏️ Edit Profile</a>
+  <header id="site-header"></header>
+
+  <main class="container py-4">
+    <!-- Profile -->
+    <div class="card mb-4">
+      <div class="card-body d-flex align-items-center gap-3 flex-wrap">
+        <img id="profileImage" src="https://i.pravatar.cc/100" class="profile-img" alt="Profile" />
+        <div class="flex-grow-1">
+          <h1 id="userName" class="h3 mb-1 page-title">Username</h1>
+          <p id="userMeta" class="text-muted mb-0"></p>
+        </div>
+        <a id="profileAction" href="edit-profile.html" class="btn btn-brand">✏️ Edit Profile</a>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="row g-3 mb-4" id="stats">
+      <div class="col-4">
+        <div class="card stat-tile">
+          <span class="stat-value" id="stat-attempts">0</span>
+          <span class="stat-label">Attempts</span>
         </div>
       </div>
-
-      <nav class="nav flex-column mt-4 w-100">
-        <a class="nav-link" href="index.html">🎯 Play Quiz</a>
-        <a class="nav-link" href="#scores">📊 Scorecard</a>
-        <a class="nav-link" href="#improvement">📈 Improvement</a>
-        <a id="logoutLink" class="nav-link text-danger" href="login.html">🚪 Logout</a>
-      </nav>
-    </div>
-
-    <!-- Main content -->
-    <div class="flex-grow-1 p-4">
-      <h2 id="scores">📊 Your Scorecard</h2>
-      <p id="stats" class="text-muted mb-2"></p>
-      <div id="scoreList" class="mt-3"></div>
-
-      <h3 id="improvement" class="mt-5">📈 Your Improvement</h3>
-      <div class="chart-wrap">
-        <canvas id="scoreChart"></canvas>
+      <div class="col-4">
+        <div class="card stat-tile">
+          <span class="stat-value" id="stat-best">–</span>
+          <span class="stat-label">Best score</span>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="card stat-tile">
+          <span class="stat-value" id="stat-average">–</span>
+          <span class="stat-label">Average</span>
+        </div>
       </div>
     </div>
-  </div>
 
-  <script src="assets/js/storage.js"></script>
+    <!-- Attempts -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <h2 id="scores" class="h4 mb-3">📊 Your attempts</h2>
+        <div id="scoreList"></div>
+      </div>
+    </div>
+
+    <!-- Chart -->
+    <div class="card" id="chartCard">
+      <div class="card-body">
+        <h2 id="improvement" class="h4 mb-3">📈 Your improvement</h2>
+        <div class="chart-wrap">
+          <canvas id="scoreChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    © 2026 AVA · Questions by the <a href="https://opentdb.com/" target="_blank" rel="noopener">Open Trivia Database</a>
+  </footer>
+
+  <script src="assets/js/nav.js"></script>
   <script src="assets/js/scorecard.js"></script>
 </body>
 </html>

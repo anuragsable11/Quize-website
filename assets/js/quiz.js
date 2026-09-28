@@ -265,21 +265,9 @@ submitBtn.addEventListener("click", checkAnswer);
 nextBtn.addEventListener("click", nextQuestion);
 restartBtn.addEventListener("click", () => window.location.reload());
 
-// ---------- Greeting and Login/Logout link ----------
+// ---------- Greeting ----------
 
-const greetingDiv = document.getElementById("greeting");
-const authLink = document.getElementById("auth-link");
 const loggedInUser = Store.getLoggedInUser();
-
-if (loggedInUser) {
-  greetingDiv.textContent = `Hello, ${loggedInUser}!`;
-  authLink.textContent = "Logout";
-  authLink.addEventListener("click", (e) => {
-    e.preventDefault();
-    Store.logout();
-    window.location.href = "login.html";
-  });
-} else {
-  greetingDiv.textContent = "Playing as a guest. Log in to keep your scores on your account.";
-  authLink.textContent = "Login";
-}
+document.getElementById("greeting").textContent = loggedInUser
+  ? `Hello, ${loggedInUser}! Pick your settings and start.`
+  : "Playing as a guest. Log in to keep your scores on your account.";

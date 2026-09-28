@@ -1,175 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quiz App</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
-      integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-    <!-- Our styles come last so they override Bootstrap where the two overlap -->
-    <link rel="stylesheet" href="assets/css/styles.css" />
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz Platform – Test your knowledge</title>
+  <meta name="description" content="Free interactive trivia quizzes across 17 categories with a timer, scorecard and progress chart." />
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+    integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/landing.css" />
+  <script src="assets/js/storage.js"></script>
+  <script src="assets/js/theme.js"></script>
+</head>
+<body>
+  <header id="site-header"></header>
 
-  <body>
-    <canvas id="particle-canvas"></canvas>
-
-    <div class="top-bar">
-      <a href="login.html" id="auth-link" class="btn btn-sm btn-outline-dark">Login</a>
-      <label class="switch" title="Toggle dark mode">
-        <input type="checkbox" id="theme-toggle" aria-label="Toggle dark mode">
-        <span class="slider"></span>
-      </label>
-    </div>
-
-    <div class="quiz-container">
-      <!-- Start Screen -->
-      <div class="start-screen">
-        <div class="logo">
-          <div class="icon">?</div>
-          <div class="text">Interactive Quiz Platform</div>
+  <main>
+    <!-- Hero -->
+    <section class="hero on-dark">
+      <canvas id="particle-canvas" class="particles-in-parent" data-color="rgba(255, 255, 255, 0.4)"></canvas>
+      <div class="container hero-content text-center">
+        <span class="hero-badge">Free · No install · Works in your browser</span>
+        <h1>Test your knowledge.<br />Track your progress.</h1>
+        <p class="lead">
+          Thousands of trivia questions across 17 categories and three difficulty levels,
+          with a timer that keeps you on your toes and a scorecard that shows how you improve.
+        </p>
+        <div class="hero-actions">
+          <a href="quiz.html" class="btn btn-accent btn-lg">🎯 Start a Quiz</a>
+          <a href="signup.html" id="hero-secondary" class="btn btn-outline-light btn-lg">Create a free account</a>
         </div>
-        <div id="greeting"></div>
-        <div class="logo1">
-          <span>AVA</span>
-        </div>
-        <div class="settings mt-4">
-          <div class="row g-4">
-            <!-- Number of Questions -->
-            <div class="col-md-6 col-lg-3">
-              <label for="num-questions" class="form-label">Number of Questions</label>
-              <div class="input-group">
-                <span class="input-group-text"><i class="fas fa-list-ol"></i></span>
-                <select id="num-questions" class="form-select">
-                  <option value="5">5</option>
-                  <option value="10">10</option>
-                  <option value="15">15</option>
-                  <option value="20">20</option>
-                  <option value="30">30</option>
-                  <option value="40">40</option>
-                  <option value="50">50</option>
-                </select>
-              </div>
-            </div>
+        <ul class="hero-stats">
+          <li><strong>17</strong> categories</li>
+          <li><strong>3</strong> difficulty levels</li>
+          <li><strong>50</strong> questions per quiz, max</li>
+        </ul>
+      </div>
+    </section>
 
-            <!-- Select Category -->
-            <div class="col-md-6 col-lg-3">
-              <label for="category" class="form-label">Select Category</label>
-              <div class="input-group">
-                <span class="input-group-text"><i class="fas fa-tags"></i></span>
-                <select id="category" class="form-select">
-                  <option value="">Any Category</option>
-                  <option value="9">General Knowledge</option>
-                  <option value="10">Books</option>
-                  <option value="11">Films</option>
-                  <option value="12">Music</option>
-                  <option value="14">Television</option>
-                  <option value="15">Video Games</option>
-                  <option value="16">Board Games</option>
-                  <option value="17">Science and Nature</option>
-                  <option value="18">Computers</option>
-                  <option value="19">Mathematics</option>
-                  <option value="20">Mythology</option>
-                  <option value="21">Sports</option>
-                  <option value="22">Geography</option>
-                  <option value="23">History</option>
-                  <option value="24">Politics</option>
-                  <option value="25">Art</option>
-                  <option value="28">Vehicles</option>
-                </select>
-              </div>
-            </div>
-
-            <!-- Select Difficulty -->
-            <div class="col-md-6 col-lg-3">
-              <label for="difficulty" class="form-label">Select Difficulty</label>
-              <div class="input-group">
-                <span class="input-group-text"><i class="fas fa-signal"></i></span>
-                <select id="difficulty" class="form-select">
-                  <option value="">Any Difficulty</option>
-                  <option value="easy">Easy</option>
-                  <option value="medium">Medium</option>
-                  <option value="hard">Hard</option>
-                </select>
-              </div>
-            </div>
-
-            <!-- Time Per Question -->
-            <div class="col-md-6 col-lg-3">
-              <label for="time" class="form-label">Time Per Question</label>
-              <div class="input-group">
-                <span class="input-group-text"><i class="fas fa-clock"></i></span>
-                <select id="time" class="form-select">
-                  <option value="10">10 seconds</option>
-                  <option value="15">15 seconds</option>
-                  <option value="20">20 seconds</option>
-                  <option value="25">25 seconds</option>
-                  <option value="30">30 seconds</option>
-                  <option value="60">60 seconds</option>
-                </select>
-              </div>
-            </div>
+    <!-- Features -->
+    <section class="container section" id="features">
+      <h2>Why you'll like it</h2>
+      <div class="row g-4">
+        <div class="col-sm-6 col-lg-3">
+          <div class="card feature-card">
+            <div class="feature-icon"><i class="fas fa-layer-group"></i></div>
+            <h3>Pick your topic</h3>
+            <p>From science and history to films, music and video games. Choose a category or mix them all.</p>
           </div>
         </div>
-
-        <p id="start-message" class="alert alert-warning mt-3 mb-0 hide" role="alert"></p>
-
-        <button class="quiz-btn start">Start Quiz</button>
-        <div class="text-end mt-2">
-          <a href="scorecard.html" class="btn btn-warning">📊 View Scorecard</a>
+        <div class="col-sm-6 col-lg-3">
+          <div class="card feature-card">
+            <div class="feature-icon"><i class="fas fa-stopwatch"></i></div>
+            <h3>Beat the clock</h3>
+            <p>Set 10 to 60 seconds per question. A countdown beep warns you when time is nearly up.</p>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+          <div class="card feature-card">
+            <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+            <h3>Track your progress</h3>
+            <p>Every attempt is saved to your scorecard, with your best and average scores and a progress chart.</p>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+          <div class="card feature-card">
+            <div class="feature-icon"><i class="fas fa-moon"></i></div>
+            <h3>Easy on the eyes</h3>
+            <p>Switch between light and dark mode with one click. Your choice is remembered.</p>
+          </div>
         </div>
       </div>
+    </section>
 
-      <!-- Quiz Screen -->
-      <div class="quiz hide">
-        <div class="timer">
-          <div class="progress">
-            <div class="progress-bar"></div>
-            <span class="progress-text"></span>
-          </div>
-        </div>
-        <div class="question-wrapper">
-          <div class="number"></div>
-          <div class="question"></div>
-        </div>
-        <div class="answer-wrapper"></div>
-        <button class="quiz-btn submit" disabled>Submit</button>
-        <button class="quiz-btn next">Next</button>
-      </div>
-
-      <!-- End Screen -->
-      <div class="end-screen hide">
-        <h1 class="heading">Congratulations!</h1>
-        <div class="score-card">
-          <div class="score-summary">
-            <div class="score-title">Your Score</div>
-            <div class="score-value">
-              <span class="final-score">0</span>
-              <span class="total-score">/10</span>
+    <!-- How it works -->
+    <section class="container section" id="how-it-works">
+      <h2>How it works</h2>
+      <div class="row g-4 justify-content-center">
+        <div class="col-md-4">
+          <div class="step">
+            <div class="step-number">1</div>
+            <div>
+              <h3>Set up your quiz</h3>
+              <p>Choose the number of questions, a category, a difficulty and the time per question.</p>
             </div>
           </div>
-          <div class="score-feedback">
-            <span class="score-text">Great job!</span>
+        </div>
+        <div class="col-md-4">
+          <div class="step">
+            <div class="step-number">2</div>
+            <div>
+              <h3>Answer before time runs out</h3>
+              <p>Pick an answer and submit. You'll see straight away whether you got it right.</p>
+            </div>
           </div>
         </div>
-        <button class="quiz-btn restart">Restart Quiz</button>
-        <div class="mt-3">
-          <a href="scorecard.html" class="btn btn-warning">📊 View Scorecard</a>
+        <div class="col-md-4">
+          <div class="step">
+            <div class="step-number">3</div>
+            <div>
+              <h3>Check your scorecard</h3>
+              <p>Review every attempt and watch your scores climb over time.</p>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
 
-    <script src="assets/js/storage.js"></script>
-    <script src="assets/js/quiz.js"></script>
-    <script src="assets/js/theme.js"></script>
-    <script src="assets/js/particles.js"></script>
-  </body>
+    <!-- Call to action -->
+    <section class="cta-band on-dark">
+      <div class="container">
+        <h2>Ready to play?</h2>
+        <a href="quiz.html" class="btn btn-accent btn-lg">🎯 Start a Quiz</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    © 2026 AVA · Questions by the <a href="https://opentdb.com/" target="_blank" rel="noopener">Open Trivia Database</a>
+  </footer>
+
+  <script src="assets/js/nav.js"></script>
+  <script src="assets/js/landing.js"></script>
+  <script src="assets/js/particles.js"></script>
+</body>
 </html>

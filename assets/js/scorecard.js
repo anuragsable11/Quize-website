@@ -1,36 +1,24 @@
 const displayName = Store.getLoggedInUser() || "Guest";
 const currentUser = Store.getCurrentUser();
 
+// ---------- Profile card ----------
+
 document.getElementById("userName").textContent = displayName;
+document.getElementById("profileImage").src = Store.getProfileImage() || Store.DEFAULT_AVATAR;
 
-// ---------- Sidebar: profile image with dropdown menu ----------
+const userMeta = document.getElementById("userMeta");
+const profileAction = document.getElementById("profileAction");
 
-const profileImage = document.getElementById("profileImage");
-const profileMenu = document.getElementById("profileMenu");
-const profileMenuLink = document.getElementById("profileMenuLink");
-
-profileImage.src = Store.getProfileImage() || Store.DEFAULT_AVATAR;
-
-if (!currentUser) {
+if (currentUser) {
+  userMeta.textContent = currentUser.email;
+} else {
   // Guests have no account to edit
-  profileMenuLink.href = "login.html";
-  profileMenuLink.textContent = "🔑 Log in";
+  userMeta.textContent = "Playing as a guest. Log in to save scores to your account.";
+  profileAction.href = "login.html";
+  profileAction.textContent = "🔑 Log in";
 }
 
-profileImage.addEventListener("click", () => {
-  profileMenu.style.display = profileMenu.style.display === "block" ? "none" : "block";
-});
-
-// Hide menu when clicking outside
-document.addEventListener("click", (e) => {
-  if (!profileImage.contains(e.target) && !profileMenu.contains(e.target)) {
-    profileMenu.style.display = "none";
-  }
-});
-
-document.getElementById("logoutLink").addEventListener("click", () => Store.logout());
-
-// ---------- Score history and improvement chart ----------
+// ---------- Score history ----------
 
 // Older entries only have the "3/5" string; newer ones also store the numbers.
 const scores = Store.getMyScores().map((s) => {
@@ -50,14 +38,21 @@ const el = (tag, className, text) => {
 const capitalize = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 
 const scoreListDiv = document.getElementById("scoreList");
-const statsDiv = document.getElementById("stats");
+const chartCard = document.getElementById("chartCard");
+const statAttempts = document.getElementById("stat-attempts");
+const statBest = document.getElementById("stat-best");
+const statAverage = document.getElementById("stat-average");
 
 if (scores.length === 0) {
-  const p = el("p", null, "No scores yet. ");
+  const p = el("p", "mb-0", "No scores yet. ");
   const link = el("a", null, "Play a quiz!");
-  link.href = "index.html";
+  link.href = "quiz.html";
   p.appendChild(link);
   scoreListDiv.appendChild(p);
+  statAttempts.textContent = "0";
+  statBest.textContent = "–";
+  statAverage.textContent = "–";
+  chartCard.classList.add("hide");
 } else {
   scores.forEach((s, i) => {
     const box = el("div", "score-box");
@@ -79,12 +74,24 @@ if (scores.length === 0) {
   });
 
   const percents = scores.map((s) => s.percent);
-  const best = Math.max(...percents);
-  const average = Math.round(percents.reduce((a, b) => a + b, 0) / percents.length);
-  statsDiv.textContent = `${scores.length} attempt${scores.length === 1 ? "" : "s"} · Best: ${best}% · Average: ${average}%`;
+  statAttempts.textContent = scores.length;
+  statBest.textContent = `${Math.max(...percents)}%`;
+  statAverage.textContent = `${Math.round(percents.reduce((a, b) => a + b, 0) / percents.length)}%`;
 
+  // ---------- Improvement chart ----------
+
+  // Grid and label colours that read well on the current theme
+  const chartColors = () => {
+    const dark = document.documentElement.getAttribute("data-bs-theme") === "dark";
+    return {
+      text: dark ? "#c7c9d6" : "#4b5563",
+      grid: dark ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.08)",
+    };
+  };
+
+  const colors = chartColors();
   // Percentages make attempts with different question counts comparable.
-  new Chart(document.getElementById("scoreChart").getContext("2d"), {
+  const chart = new Chart(document.getElementById("scoreChart").getContext("2d"), {
     type: "line",
     data: {
       labels: scores.map((_, i) => `Attempt ${i + 1}`),
@@ -101,13 +108,26 @@ if (scores.length === 0) {
     },
     options: {
       maintainAspectRatio: false, // fill .chart-wrap
+      plugins: { legend: { labels: { color: colors.text } } },
       scales: {
+        x: { ticks: { color: colors.text }, grid: { color: colors.grid } },
         y: {
           beginAtZero: true,
           max: 100,
-          ticks: { callback: (value) => `${value}%` },
+          ticks: { color: colors.text, callback: (value) => `${value}%` },
+          grid: { color: colors.grid },
         },
       },
     },
+  });
+
+  document.addEventListener("themechange", () => {
+    const c = chartColors();
+    chart.options.plugins.legend.labels.color = c.text;
+    ["x", "y"].forEach((axis) => {
+      chart.options.scales[axis].ticks.color = c.text;
+      chart.options.scales[axis].grid.color = c.grid;
+    });
+    chart.update();
   });
 }

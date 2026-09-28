@@ -1,95 +1,54 @@
-/* Shared styles for the login and sign-up pages. */
+/* Login and sign-up pages. */
 
-/* Overall Layout */
-body, html {
-  height: 100%;
-  margin: 0;
-  font-family: 'Poppins', sans-serif;
-}
-
-/* Gradient Background */
-body {
-  background: linear-gradient(135deg, #00c6ff, #0072ff);
-  background-size: 400% 400%;
-  animation: gradientAnimation 5s ease infinite;
+.auth-main {
   display: flex;
-  justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  padding: 16px;
+  justify-content: center;
+  padding: 48px 16px;
 }
 
-@keyframes gradientAnimation {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-/* Form Container */
-.login-container {
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 10px;
-  padding: 40px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+.auth-card {
   width: 100%;
-  max-width: 400px;
+  max-width: 420px;
+  padding: 36px 32px;
+}
+
+.auth-card h1 {
+  font-weight: 700;
   text-align: center;
+  margin-bottom: 24px;
 }
 
-/* Floating Label Style */
-.form-floating {
-  position: relative;
-}
-
-.form-floating input:focus,
-.form-floating input:valid {
-  background-color: #f1f1f1;
-  border-color: #0072ff;
-}
-
-.form-floating label {
-  position: absolute;
-  top: 50%;
-  left: 10px;
-  transform: translateY(-50%);
-  transition: all 0.3s ease-in-out;
-  font-weight: bold;
-  color: #0072ff;
-}
-
-.form-floating input:focus ~ label,
-.form-floating input:valid ~ label {
-  top: -10px;
-  font-size: 0.9rem;
-}
-
-/* Button Styling */
-button[type="submit"] {
-  background-color: #0072ff;
-  border: none;
-  color: white;
+.auth-card .btn-primary {
+  --bs-btn-bg: var(--brand-primary);
+  --bs-btn-border-color: var(--brand-primary);
+  --bs-btn-hover-bg: var(--brand-primary-hover);
+  --bs-btn-hover-border-color: var(--brand-primary-hover);
+  --bs-btn-active-bg: var(--brand-primary-hover);
+  --bs-btn-active-border-color: var(--brand-primary-hover);
+  font-weight: 600;
   padding: 12px;
-  font-size: 18px;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
-  font-weight: bold;
 }
 
-button[type="submit"]:hover {
-  background-color: #005bb5;
+.auth-card .form-control:focus {
+  border-color: var(--brand-secondary);
+  box-shadow: 0 0 0 0.25rem rgba(106, 27, 154, 0.25);
 }
 
-button[type="submit"]:active {
-  background-color: #004a8e;
+.auth-links {
+  text-align: center;
+  color: var(--text-muted);
+  margin-top: 20px;
+}
+.auth-links p {
+  margin-bottom: 6px;
 }
 
-button[type="submit"]:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
+@media (max-width: 576px) {
+  .auth-main {
+    padding: 24px 12px;
+  }
+  .auth-card {
+    padding: 28px 20px;
+  }
 }

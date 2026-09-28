@@ -1,8 +1,5 @@
-body {
-  background-color: #f4f4f4;
-  font-family: 'Poppins', sans-serif;
-  padding: 40px;
-}
+/* Edit profile page. */
+
 .profile-card {
   max-width: 600px;
 }
@@ -11,13 +8,5 @@ body {
   height: 120px;
   object-fit: cover;
   border-radius: 50%;
-}
-
-@media (max-width: 576px) {
-  body {
-    padding: 16px;
-  }
-  .profile-card {
-    padding: 24px !important; /* override Bootstrap's p-5 utility */
-  }
+  border: 3px solid var(--brand-secondary);
 }

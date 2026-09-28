@@ -1,0 +1,226 @@
+/* Shared design tokens, layout, navigation bar, cards and footer.
+   Loaded on every page after Bootstrap, so these rules take precedence. */
+
+:root {
+  --brand-primary: #1A237E;
+  --brand-primary-hover: #283593;
+  --brand-secondary: #6A1B9A;
+  --brand-accent: #FF4081;
+  --brand-accent-hover: #f0246b;
+  --brand-blue: #0c80ef;
+  --brand-gradient: linear-gradient(135deg, #1A237E 0%, #6A1B9A 100%);
+  --page-bg: #f4f5fb;
+  --surface: #ffffff;
+  --surface-2: #f1f2f8;
+  --text: #1f2847;
+  --text-muted: #6b7280;
+  --border: #e3e5ef;
+  --shadow: 0 4px 16px rgba(26, 35, 126, 0.08);
+  --radius: 14px;
+
+  /* Make Bootstrap components use the same colours */
+  --bs-body-color: var(--text);
+  --bs-heading-color: var(--text);
+  --bs-body-font-family: "Poppins", sans-serif;
+}
+
+/* Bootstrap's colour mode attribute; theme.js sets it on <html> */
+[data-bs-theme="dark"] {
+  --page-bg: #121218;
+  --surface: #1c1c26;
+  --surface-2: #262636;
+  --text: #f1f1f5;
+  --text-muted: #a0a3b8;
+  --border: #33334a;
+  --shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+
+  --bs-body-color: var(--text);
+  --bs-heading-color: var(--text);
+}
+
+/* ---------- Layout ---------- */
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: "Poppins", sans-serif;
+  background: var(--page-bg);
+  color: var(--text);
+}
+main {
+  flex: 1;
+}
+.hide {
+  display: none !important;
+}
+.page-title {
+  font-weight: 700;
+}
+/* Sections with a dark gradient background keep white headings in both themes */
+.on-dark {
+  --bs-heading-color: #fff;
+  color: #fff;
+}
+
+/* ---------- Cards ---------- */
+.card {
+  --bs-card-bg: var(--surface);
+  --bs-card-border-color: var(--border);
+  --bs-card-border-radius: var(--radius);
+  --bs-card-inner-border-radius: calc(var(--radius) - 1px);
+  box-shadow: var(--shadow);
+}
+
+/* ---------- Buttons ---------- */
+.btn-accent {
+  --bs-btn-bg: var(--brand-accent);
+  --bs-btn-border-color: var(--brand-accent);
+  --bs-btn-color: #fff;
+  --bs-btn-hover-bg: var(--brand-accent-hover);
+  --bs-btn-hover-border-color: var(--brand-accent-hover);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-active-bg: var(--brand-accent-hover);
+  --bs-btn-active-border-color: var(--brand-accent-hover);
+  --bs-btn-active-color: #fff;
+  font-weight: 600;
+}
+.btn-brand {
+  --bs-btn-bg: var(--brand-primary);
+  --bs-btn-border-color: var(--brand-primary);
+  --bs-btn-color: #fff;
+  --bs-btn-hover-bg: var(--brand-primary-hover);
+  --bs-btn-hover-border-color: var(--brand-primary-hover);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-active-bg: var(--brand-primary-hover);
+  --bs-btn-active-border-color: var(--brand-primary-hover);
+  --bs-btn-active-color: #fff;
+  font-weight: 600;
+}
+
+/* ---------- Navigation bar (rendered by nav.js) ---------- */
+.site-nav {
+  background: var(--brand-gradient);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+  padding: 0.6rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+.site-nav .navbar-brand {
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.brand-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--brand-primary);
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+}
+.brand-tag {
+  color: var(--brand-accent);
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+}
+.site-nav .nav-link {
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 500;
+  padding: 0.5rem 0.9rem;
+}
+.site-nav .nav-link:hover,
+.site-nav .nav-link.active {
+  color: #fff;
+}
+.site-nav .nav-link.active {
+  border-bottom: 2px solid var(--brand-accent);
+}
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+#nav-auth {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.theme-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+.theme-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+.nav-user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  max-width: 220px;
+}
+.nav-user:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+.nav-user-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.nav-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  flex-shrink: 0;
+}
+
+@media (max-width: 767.98px) {
+  .site-nav .navbar-collapse {
+    padding-top: 12px;
+  }
+  .site-nav .nav-link.active {
+    border-bottom: none;
+    border-left: 3px solid var(--brand-accent);
+    padding-left: 10px;
+  }
+  .nav-right {
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+  }
+}
+
+/* ---------- Footer ---------- */
+.site-footer {
+  text-align: center;
+  padding: 24px 16px;
+  margin-top: 40px;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  border-top: 1px solid var(--border);
+}
+.site-footer a {
+  color: var(--text-muted);
+}
