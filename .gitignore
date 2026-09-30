@@ -4,6 +4,11 @@ dist
 dist-ssr
 *.local
 
+# Environment variables hold secrets such as HF_TOKEN. .env.example lists them without values.
+.env
+.env.*
+!.env.example
+
 # Logs
 logs
 *.log

@@ -1,4 +1,4 @@
-import { CheckIcon, CircleCheckIcon, CircleXIcon, TimerIcon, TimerOffIcon, XIcon } from "lucide-react"
+import { CheckIcon, CircleCheckIcon, CircleXIcon, SparklesIcon, TimerIcon, TimerOffIcon, XIcon } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
@@ -51,6 +51,11 @@ export function QuizQuestion({
           <div className="flex flex-wrap gap-2">
             <Badge variant="secondary">{question.category}</Badge>
             <Badge variant="outline" className="capitalize">{question.difficulty}</Badge>
+            {question.ai && (
+              <Badge variant="outline" data-testid="ai-badge">
+                <SparklesIcon /> AI-generated
+              </Badge>
+            )}
           </div>
           <span
             data-testid="timer"

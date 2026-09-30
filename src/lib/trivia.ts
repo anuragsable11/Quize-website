@@ -32,8 +32,11 @@ export const QUESTION_COUNTS = [5, 10, 15, 20, 30, 40, 50] as const
 export const TIME_LIMITS = [10, 15, 20, 25, 30, 60] as const
 
 export type QuizSettings = {
+  /** Open Trivia DB questions, or AI-written ones on `topic` (see ai.ts) */
+  source: "trivia" | "ai"
   amount: number
   category: string
+  topic: string
   difficulty: string
   seconds: number
 }
@@ -44,6 +47,8 @@ export type Question = {
   difficulty: string
   correct: string
   answers: string[]
+  /** Written by AI rather than taken from the trivia database */
+  ai?: boolean
 }
 
 /** An error whose message is safe to show to the player. */
@@ -54,7 +59,7 @@ const decodeHtml = (html: string) =>
   new DOMParser().parseFromString(html, "text/html").documentElement.textContent ?? html
 
 // Fisher-Yates shuffle
-const shuffle = <T>(items: T[]): T[] => {
+export const shuffle = <T>(items: T[]): T[] => {
   const array = [...items]
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))

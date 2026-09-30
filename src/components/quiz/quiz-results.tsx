@@ -1,9 +1,11 @@
+import { useState } from "react"
 import { Link } from "react-router"
-import { CheckIcon, RotateCcwIcon, SlidersHorizontalIcon, TimerOffIcon, XIcon } from "lucide-react"
+import { CheckIcon, Loader2Icon, RotateCcwIcon, SlidersHorizontalIcon, SparklesIcon, TimerOffIcon, XIcon } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import type { Question } from "@/lib/trivia"
+import { explainAnswer } from "@/lib/ai"
+import { QuizError, type Question } from "@/lib/trivia"
 import { cn } from "@/lib/utils"
 
 type Props = {
@@ -99,6 +101,7 @@ export function QuizResults({ questions, answers, loading, onPlayAgain, onChange
                         </p>
                       </>
                     )}
+                    <Explanation question={q} answer={answer} />
                   </div>
                 </li>
               )
@@ -106,6 +109,49 @@ export function QuizResults({ questions, answers, loading, onPlayAgain, onChange
           </ol>
         </CardContent>
       </Card>
+    </div>
+  )
+}
+
+type ExplanationState =
+  | { status: "idle" | "loading" }
+  | { status: "done"; text: string }
+  | { status: "error"; message: string }
+
+/** An "Explain" button that asks the AI why the correct answer is right. */
+function Explanation({ question, answer }: { question: Question; answer: string | null }) {
+  const [state, setState] = useState<ExplanationState>({ status: "idle" })
+
+  const explain = async () => {
+    setState({ status: "loading" })
+    try {
+      setState({ status: "done", text: await explainAnswer(question, answer) })
+    } catch (err) {
+      setState({ status: "error", message: err instanceof QuizError ? err.message : "Something went wrong. Please try again." })
+    }
+  }
+
+  if (state.status === "done") {
+    return (
+      <p className="mt-2 flex gap-2 rounded-lg bg-muted px-3 py-2.5 text-foreground" data-testid="explanation">
+        <SparklesIcon className="mt-0.5 size-3.5 shrink-0 text-primary" aria-label="AI explanation" />
+        <span>{state.text}</span>
+      </p>
+    )
+  }
+
+  const loading = state.status === "loading"
+  return (
+    <div className="pt-1">
+      <Button variant="ghost" size="xs" onClick={explain} disabled={loading} className="-ml-2 text-muted-foreground" data-testid="explain">
+        {loading ? <Loader2Icon className="animate-spin" data-icon="inline-start" /> : <SparklesIcon data-icon="inline-start" />}
+        {loading ? "Explaining…" : state.status === "error" ? "Try again" : "Explain"}
+      </Button>
+      {state.status === "error" && (
+        <p className="text-xs text-destructive" role="alert">
+          {state.message}
+        </p>
+      )}
     </div>
   )
 }

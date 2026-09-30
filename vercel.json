@@ -12,5 +12,5 @@
     { "source": "/edit-profile.html", "destination": "/profile", "permanent": true },
     { "source": "/users.html", "destination": "/", "permanent": true }
   ],
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "rewrites": [{ "source": "/((?!api/).*)", "destination": "/index.html" }]
 }

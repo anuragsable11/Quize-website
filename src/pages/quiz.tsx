@@ -3,6 +3,7 @@ import { QuizQuestion } from "@/components/quiz/quiz-question"
 import { QuizResults } from "@/components/quiz/quiz-results"
 import { QuizSetup } from "@/components/quiz/quiz-setup"
 import { useDocumentTitle } from "@/hooks/use-document-title"
+import { generateQuestions } from "@/lib/ai"
 import { useAuth } from "@/lib/auth"
 import { tick } from "@/lib/media"
 import { addScore } from "@/lib/storage"
@@ -75,7 +76,7 @@ function reducer(state: State, action: Action): State {
   return state
 }
 
-const DEFAULT_SETTINGS: QuizSettings = { amount: 10, category: "", difficulty: "", seconds: 30 }
+const DEFAULT_SETTINGS: QuizSettings = { source: "trivia", amount: 10, category: "", topic: "", difficulty: "", seconds: 30 }
 
 // ---------- page ----------
 
@@ -92,7 +93,7 @@ export default function QuizPage() {
     setError(null)
     setLoading(true)
     try {
-      const questions = await fetchQuestions(settings)
+      const questions = settings.source === "ai" ? await generateQuestions(settings) : await fetchQuestions(settings)
       dispatch({ type: "start", questions, seconds: settings.seconds })
       window.scrollTo({ top: 0 })
     } catch (err) {
@@ -129,7 +130,7 @@ export default function QuizPage() {
         score: `${correct}/${total}`,
         correct,
         total,
-        category: categoryName(settings.category),
+        category: settings.source === "ai" ? `${settings.topic.trim()} (AI)` : categoryName(settings.category),
         difficulty: settings.difficulty || "any",
         date: new Date().toISOString(),
       })
