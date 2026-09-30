@@ -63,7 +63,7 @@ export function AuthCard({
       {/* Form */}
       <div className="flex items-center justify-center py-6 lg:py-0">
         <div className="w-full max-w-sm">
-          <LogoMark className="mb-6 size-11 rounded-xl lg:hidden" />
+          <LogoMark className="mb-6 size-12 lg:hidden" />
           <h1 className="text-3xl font-semibold tracking-tight">{title}</h1>
           <p className="mt-2 text-muted-foreground">{description}</p>
           <div className="mt-8">{children}</div>

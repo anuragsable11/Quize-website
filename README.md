@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="public/logo.svg" alt="Quizverse logo" width="72" height="72" />
+  <img src="public/logo-full.png" alt="Quizverse: Play · Learn · Grow" width="240" height="240" />
 </p>
 
 # Quizverse
@@ -61,7 +61,7 @@ The token is only used on the server. Don't rename it to `VITE_HF_TOKEN`: `VITE_
 ```
 Quize-website/
 ├── index.html                 # HTML shell: title, meta tags, favicon
-├── public/                    # Static files copied as-is (logo.svg, apple-touch-icon.png)
+├── public/                    # Static files copied as-is (full logo, favicon, apple-touch-icon)
 ├── api/                       # Vercel Functions (server-side; they hold the Hugging Face token)
 │   ├── generate.ts            #   POST /api/generate  writes an AI quiz on a topic
 │   ├── explain.ts             #   POST /api/explain   explains why an answer is correct
@@ -126,7 +126,7 @@ Because everything is stored in the browser, accounts only exist on the device w
 ## Brand
 
 - **Name:** Quizverse (one word, capital Q). **Tagline:** A universe of trivia.
-- **Logo:** `public/logo.svg`, a "Q" drawn as an orbit ring with a satellite, on an indigo tile. In React use `<Logo />` or `<LogoMark />` from `src/components/logo.tsx`.
+- **Logo:** `public/logo-full.png` is the full logo: the symbol, the wordmark and the tagline "Play · Learn · Grow". The symbol (a "Q" holding a question mark, circled by an orbit) is cropped to `src/assets/logo-mark.webp` and shown as a rounded tile; `public/favicon.png` and `public/apple-touch-icon.png` are made from it. In React use `<Logo />` (symbol + wordmark) or `<LogoMark />` from `src/components/logo.tsx`.
 - **Fonts:** Geist for the interface, Geist Mono for labels and numbers, and Instrument Serif (italic) for accent words in large headings. All self-hosted via Fontsource.
 - **Motif:** the logo's orbit, drawn as tilted rings with moving satellites (`src/components/orbit-art.tsx`). Satellites stay still for visitors who prefer reduced motion.
 - **Colours** (CSS variables in `src/index.css`; neutrals come from shadcn's neutral palette):
@@ -134,6 +134,7 @@ Because everything is stored in the browser, accounts only exist on the device w
 | Role    | Light                   | Dark                    | Variable      |
 | ------- | ----------------------- | ----------------------- | ------------- |
 | Primary | indigo-600 `#4F46E5`    | indigo-500 `#6366F1`    | `--primary`   |
+| Brand gradient | blue `#2972F9` → violet `#8F33F8`, taken from the logo | lighter tints of the same | `--brand-blue`, `--brand` |
 | Success | emerald-600 `#059669`   | emerald-500 `#10B981`   | `--success`   |
 | Error   | shadcn destructive red  | shadcn destructive red  | `--destructive` |
 

@@ -35,7 +35,10 @@ export function SiteFooter() {
     <footer className="relative overflow-hidden border-t">
       <div className="mx-auto grid max-w-6xl gap-10 px-4 pt-14 pb-10 sm:px-6 md:grid-cols-[1.6fr_1fr_1fr_1fr]">
         <div className="max-w-xs space-y-4">
-          <Logo />
+          <div className="space-y-2">
+            <Logo />
+            <p className="font-mono text-[0.65rem] tracking-[0.3em] text-muted-foreground uppercase">Play · Learn · Grow</p>
+          </div>
           <p className="text-sm leading-relaxed text-muted-foreground">
             A universe of trivia. Timed quizzes across 17 categories, and a scorecard that tracks your progress.
           </p>

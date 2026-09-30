@@ -34,6 +34,7 @@
     --color-success: var(--success);
     --color-warning: var(--warning);
     --color-brand: var(--brand);
+    --color-brand-blue: var(--brand-blue);
     --color-accent-foreground: var(--accent-foreground);
     --color-accent: var(--accent);
     --color-muted-foreground: var(--muted-foreground);
@@ -92,7 +93,8 @@
     --popover-foreground: oklch(0.2 0.02 280);
     --primary: oklch(0.52 0.235 277);
     --primary-foreground: oklch(0.99 0 0);
-    --brand: oklch(0.56 0.24 300);
+    --brand: oklch(0.57 0.25 300);
+    --brand-blue: oklch(0.62 0.2 258);
     --secondary: oklch(0.965 0.005 280);
     --secondary-foreground: oklch(0.25 0.02 280);
     --muted: oklch(0.965 0.005 280);
@@ -134,7 +136,8 @@
     --popover-foreground: oklch(0.97 0.004 280);
     --primary: oklch(0.6 0.215 277);
     --primary-foreground: oklch(0.99 0 0);
-    --brand: oklch(0.68 0.2 305);
+    --brand: oklch(0.68 0.21 303);
+    --brand-blue: oklch(0.7 0.16 250);
     --secondary: oklch(0.225 0.022 280);
     --secondary-foreground: oklch(0.97 0.004 280);
     --muted: oklch(0.225 0.022 280);
@@ -218,16 +221,16 @@
     background-size: 420px 420px;
   }
 
-  /* Brand gradient text, for the accent words in display headings */
+  /* Brand gradient text (blue to violet, as in the logo), for accent words in headings */
   .text-brand-gradient {
-    background: linear-gradient(100deg, var(--primary) 10%, var(--brand) 60%, var(--primary) 110%);
+    background: linear-gradient(100deg, var(--brand-blue), var(--primary) 45%, var(--brand));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
   }
 
   .bg-brand-gradient {
-    background: linear-gradient(135deg, var(--primary), var(--brand));
+    background: linear-gradient(135deg, var(--brand-blue), var(--primary) 50%, var(--brand));
   }
 
   /* Hairline that fades out at both ends */
