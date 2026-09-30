@@ -3,6 +3,12 @@
 
 import { QuizError, shuffle, type Question, type QuizSettings } from "@/lib/trivia"
 
+/**
+ * The AI features are for subscribers. There are no subscriptions yet, so while this is on,
+ * both features are shown with a lock and open a "subscribe" dialog instead of calling the AI.
+ */
+export const AI_LOCKED: boolean = true
+
 /** Longer AI quizzes take too long to write. */
 export const AI_QUESTION_COUNTS = [5, 10, 15, 20] as const
 

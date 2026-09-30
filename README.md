@@ -41,7 +41,9 @@ npm run lint      # lint with oxlint
 
 ### AI features
 
-The AI features need a Hugging Face access token. Everything else works without one.
+The AI features are for subscribers. There are no subscriptions yet, so for now they're locked: both are shown with a lock icon, and clicking them opens a "subscribe to unlock" dialog without calling the AI. To turn them on, set `AI_LOCKED` to `false` in `src/lib/ai.ts`.
+
+When unlocked, the AI features need a Hugging Face access token. Everything else works without one.
 
 1. Create a **fine-grained** token with the **Make calls to Inference Providers** permission at [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens).
 2. Put it in a `.env` file in the project root (see `.env.example`):

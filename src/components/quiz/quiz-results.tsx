@@ -1,10 +1,11 @@
 import { useState } from "react"
 import { Link } from "react-router"
-import { CheckIcon, Loader2Icon, RotateCcwIcon, SlidersHorizontalIcon, SparklesIcon, TimerOffIcon, XIcon } from "lucide-react"
+import { CheckIcon, Loader2Icon, LockIcon, RotateCcwIcon, SlidersHorizontalIcon, SparklesIcon, TimerOffIcon, XIcon } from "lucide-react"
+import { SubscribeDialog } from "@/components/subscribe-dialog"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { explainAnswer } from "@/lib/ai"
+import { AI_LOCKED, explainAnswer } from "@/lib/ai"
 import { QuizError, type Question } from "@/lib/trivia"
 import { cn } from "@/lib/utils"
 
@@ -23,6 +24,7 @@ export function QuizResults({ questions, answers, loading, onPlayAgain, onChange
   const timedOut = answers.filter((a) => a === null).length
   const incorrect = total - correct - timedOut
   const percent = Math.round((correct / total) * 100)
+  const [subscribeOpen, setSubscribeOpen] = useState(false)
 
   const verdict =
     percent >= 80
@@ -101,7 +103,7 @@ export function QuizResults({ questions, answers, loading, onPlayAgain, onChange
                         </p>
                       </>
                     )}
-                    <Explanation question={q} answer={answer} />
+                    <Explanation question={q} answer={answer} onLocked={() => setSubscribeOpen(true)} />
                   </div>
                 </li>
               )
@@ -109,6 +111,7 @@ export function QuizResults({ questions, answers, loading, onPlayAgain, onChange
           </ol>
         </CardContent>
       </Card>
+      <SubscribeDialog open={subscribeOpen} onOpenChange={setSubscribeOpen} />
     </div>
   )
 }
@@ -118,11 +121,22 @@ type ExplanationState =
   | { status: "done"; text: string }
   | { status: "error"; message: string }
 
+type ExplanationProps = {
+  question: Question
+  answer: string | null
+  /** Called instead of asking the AI while AI_LOCKED is on */
+  onLocked: () => void
+}
+
 /** An "Explain" button that asks the AI why the correct answer is right. */
-function Explanation({ question, answer }: { question: Question; answer: string | null }) {
+function Explanation({ question, answer, onLocked }: ExplanationProps) {
   const [state, setState] = useState<ExplanationState>({ status: "idle" })
 
   const explain = async () => {
+    if (AI_LOCKED) {
+      onLocked()
+      return
+    }
     setState({ status: "loading" })
     try {
       setState({ status: "done", text: await explainAnswer(question, answer) })
@@ -146,6 +160,12 @@ function Explanation({ question, answer }: { question: Question; answer: string 
       <Button variant="ghost" size="xs" onClick={explain} disabled={loading} className="-ml-2 text-muted-foreground" data-testid="explain">
         {loading ? <Loader2Icon className="animate-spin" data-icon="inline-start" /> : <SparklesIcon data-icon="inline-start" />}
         {loading ? "Explaining…" : state.status === "error" ? "Try again" : "Explain"}
+        {AI_LOCKED && (
+          <>
+            <LockIcon data-icon="inline-end" className="opacity-70" />
+            <span className="sr-only">(subscribers only)</span>
+          </>
+        )}
       </Button>
       {state.status === "error" && (
         <p className="text-xs text-destructive" role="alert">
