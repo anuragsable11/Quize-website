@@ -1,4 +1,6 @@
 import { useCallback, useEffect, useReducer, useState } from "react"
+import { useSearchParams } from "react-router"
+import { PageHeader } from "@/components/page-header"
 import { QuizQuestion } from "@/components/quiz/quiz-question"
 import { QuizResults } from "@/components/quiz/quiz-results"
 import { QuizSetup } from "@/components/quiz/quiz-setup"
@@ -7,7 +9,7 @@ import { generateQuestions } from "@/lib/ai"
 import { useAuth } from "@/lib/auth"
 import { tick } from "@/lib/media"
 import { addScore } from "@/lib/storage"
-import { categoryName, fetchQuestions, QuizError, type Question, type QuizSettings } from "@/lib/trivia"
+import { CATEGORIES, categoryName, fetchQuestions, QuizError, type Question, type QuizSettings } from "@/lib/trivia"
 
 // ---------- state ----------
 
@@ -82,7 +84,12 @@ const DEFAULT_SETTINGS: QuizSettings = { source: "trivia", amount: 10, category:
 
 export default function QuizPage() {
   const { user } = useAuth()
-  const [settings, setSettings] = useState<QuizSettings>(DEFAULT_SETTINGS)
+  // Links such as /quiz?category=17 (from the home page) preselect a category
+  const [params] = useSearchParams()
+  const [settings, setSettings] = useState<QuizSettings>(() => {
+    const category = params.get("category") ?? ""
+    return CATEGORIES.some((c) => c.id === category) ? { ...DEFAULT_SETTINGS, category } : DEFAULT_SETTINGS
+  })
   const [state, dispatch] = useReducer(reducer, { phase: "setup" })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -163,17 +170,23 @@ export default function QuizPage() {
   }, [state, next])
 
   const greeting = user
-    ? `Signed in as ${user.name}. Your results will be saved to your scorecard.`
-    : "You're playing as a guest. Log in to keep your scores under your name."
+    ? `Signed in as ${user.name}. Results are saved to your scorecard.`
+    : "Playing as a guest. Log in to keep scores under your name."
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 md:py-14">
+    <div className="relative isolate mx-auto max-w-6xl px-4 py-10 sm:px-6 md:py-14">
+      <div
+        aria-hidden
+        className="absolute inset-x-0 -top-16 -z-10 h-96 bg-[radial-gradient(50%_60%_at_50%_0%,color-mix(in_oklch,var(--primary)_10%,transparent),transparent)]"
+      />
       {state.phase === "setup" && (
         <>
-          <div className="mx-auto mb-8 max-w-2xl text-center">
-            <h1 className="text-3xl font-semibold tracking-tight">Play a quiz</h1>
-            <p className="mt-2 text-muted-foreground">Choose your settings, then answer each question before the timer runs out.</p>
-          </div>
+          <PageHeader
+            eyebrow="Play"
+            title="Set up your quiz"
+            description="Choose your settings, then answer each question before the timer runs out."
+            className="mb-8"
+          />
           <QuizSetup
             settings={settings}
             onChange={setSettings}
@@ -191,6 +204,7 @@ export default function QuizPage() {
           index={state.index}
           total={state.questions.length}
           score={state.questions.filter((q, i) => state.answers[i] === q.correct).length}
+          history={state.answers.map((a, i) => a === state.questions[i].correct)}
           seconds={state.seconds}
           remaining={state.remaining}
           selected={state.selected}

@@ -1,10 +1,10 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Link } from "react-router"
 import { CheckIcon, Loader2Icon, LockIcon, RotateCcwIcon, SlidersHorizontalIcon, SparklesIcon, TimerOffIcon, XIcon } from "lucide-react"
+import { ProgressRing } from "@/components/progress-ring"
 import { SubscribeDialog } from "@/components/subscribe-dialog"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card } from "@/components/ui/card"
 import { AI_LOCKED, explainAnswer } from "@/lib/ai"
 import { QuizError, type Question } from "@/lib/trivia"
 import { cn } from "@/lib/utils"
@@ -26,6 +26,13 @@ export function QuizResults({ questions, answers, loading, onPlayAgain, onChange
   const percent = Math.round((correct / total) * 100)
   const [subscribeOpen, setSubscribeOpen] = useState(false)
 
+  // The ring fills up from empty once the results appear
+  const [ring, setRing] = useState(0)
+  useEffect(() => {
+    const id = requestAnimationFrame(() => setRing(percent / 100))
+    return () => cancelAnimationFrame(id)
+  }, [percent])
+
   const verdict =
     percent >= 80
       ? { title: "Excellent result", text: "You clearly know this topic well." }
@@ -35,81 +42,103 @@ export function QuizResults({ questions, answers, loading, onPlayAgain, onChange
 
   return (
     <div className="mx-auto w-full max-w-3xl space-y-6">
-      <Card className="gap-6 py-6" data-testid="results">
-        <CardHeader className="px-6 text-center">
-          <p className="text-sm font-medium text-muted-foreground">Your score</p>
-          <p className="text-5xl font-semibold tracking-tight tabular-nums" data-testid="final-score">
-            {correct}
-            <span className="text-muted-foreground">/{total}</span>
-          </p>
-          <div className="flex justify-center">
-            <Badge variant="secondary" className="tabular-nums">{percent}%</Badge>
-          </div>
-          <CardTitle className="mt-2 text-lg font-semibold" data-testid="verdict">{verdict.title}</CardTitle>
-          <CardDescription>{verdict.text}</CardDescription>
-        </CardHeader>
-        <CardContent className="px-6">
-          <dl className="grid grid-cols-3 divide-x rounded-lg border text-center">
-            <Stat label="Correct" value={correct} className="text-success" />
-            <Stat label="Incorrect" value={incorrect} className="text-destructive" />
-            <Stat label="Timed out" value={timedOut} className="text-muted-foreground" />
-          </dl>
-          <div className="mt-6 flex flex-col gap-2 sm:flex-row sm:justify-center">
-            <Button onClick={onPlayAgain} disabled={loading} className="h-9" data-testid="play-again">
-              <RotateCcwIcon data-icon="inline-start" /> {loading ? "Loading…" : "Play again"}
-            </Button>
-            <Button variant="outline" onClick={onChangeSettings} className="h-9">
-              <SlidersHorizontalIcon data-icon="inline-start" /> Change settings
-            </Button>
-            <Button variant="ghost" asChild className="h-9">
-              <Link to="/scorecard">View scorecard</Link>
-            </Button>
-          </div>
-        </CardContent>
+      <Card className="gap-0 py-0 shadow-elevated" data-testid="results">
+        <div className="relative isolate px-6 pt-10 pb-8 text-center sm:pt-12">
+          <div
+            aria-hidden
+            className="absolute inset-0 -z-10 bg-[radial-gradient(50%_70%_at_50%_0%,color-mix(in_oklch,var(--primary)_14%,transparent),transparent)]"
+          />
+          <p className="font-mono text-[0.7rem] font-medium tracking-[0.18em] text-muted-foreground uppercase">Your score</p>
+          <ProgressRing
+            value={ring}
+            size={168}
+            strokeWidth={10}
+            className="mt-5"
+            indicatorClassName={cn("duration-[1400ms] ease-out", percent >= 80 ? "text-success" : percent >= 50 ? "text-primary" : "text-warning")}
+          >
+            <div>
+              <p className="text-5xl font-semibold tracking-tight tabular-nums" data-testid="final-score">
+                {correct}
+                <span className="text-3xl text-muted-foreground">/{total}</span>
+              </p>
+              <p className="mt-1 font-mono text-sm text-muted-foreground tabular-nums">{percent}%</p>
+            </div>
+          </ProgressRing>
+          <h2 className="mt-6 text-2xl font-semibold tracking-tight" data-testid="verdict">
+            {verdict.title}
+          </h2>
+          <p className="mt-1.5 text-muted-foreground">{verdict.text}</p>
+        </div>
+
+        <dl className="grid grid-cols-3 divide-x border-y text-center">
+          <Stat label="Correct" value={correct} className="text-success" />
+          <Stat label="Incorrect" value={incorrect} className="text-destructive" />
+          <Stat label="Timed out" value={timedOut} className="text-muted-foreground" />
+        </dl>
+
+        <div className="flex flex-col gap-2 p-5 sm:flex-row sm:justify-center">
+          <Button onClick={onPlayAgain} disabled={loading} className="h-10 rounded-xl px-5" data-testid="play-again">
+            <RotateCcwIcon data-icon="inline-start" /> {loading ? "Loading…" : "Play again"}
+          </Button>
+          <Button variant="outline" onClick={onChangeSettings} className="h-10 rounded-xl px-5">
+            <SlidersHorizontalIcon data-icon="inline-start" /> Change settings
+          </Button>
+          <Button variant="ghost" asChild className="h-10 rounded-xl px-5">
+            <Link to="/scorecard">View scorecard</Link>
+          </Button>
+        </div>
       </Card>
 
-      <Card className="gap-4 py-6">
-        <CardHeader className="px-6">
-          <CardTitle className="font-semibold">Review answers</CardTitle>
-        </CardHeader>
-        <CardContent className="px-6">
-          <ol className="divide-y" data-testid="review">
-            {questions.map((q, i) => {
-              const answer = answers[i]
-              const right = answer === q.correct
-              return (
-                <li key={i} className="flex gap-3 py-4 first:pt-0 last:pb-0">
-                  <span
-                    className={cn(
-                      "mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full",
-                      right ? "bg-success/15 text-success" : answer === null ? "bg-muted text-muted-foreground" : "bg-destructive/15 text-destructive"
-                    )}
-                  >
-                    {right ? <CheckIcon className="size-3" /> : answer === null ? <TimerOffIcon className="size-3" /> : <XIcon className="size-3" />}
-                  </span>
-                  <div className="min-w-0 space-y-1 text-sm">
-                    <p className="font-medium">
-                      {i + 1}. {q.question}
-                    </p>
-                    {right ? (
-                      <p className="text-muted-foreground">Your answer: {answer}</p>
-                    ) : (
-                      <>
-                        <p className="text-muted-foreground">
-                          {answer === null ? "No answer (time ran out)" : <>Your answer: <span className="text-destructive">{answer}</span></>}
-                        </p>
-                        <p className="text-muted-foreground">
-                          Correct answer: <span className="font-medium text-foreground">{q.correct}</span>
-                        </p>
-                      </>
-                    )}
-                    <Explanation question={q} answer={answer} onLocked={() => setSubscribeOpen(true)} />
-                  </div>
-                </li>
-              )
-            })}
-          </ol>
-        </CardContent>
+      <Card className="gap-0 py-0">
+        <div className="flex items-center justify-between border-b px-5 py-4 sm:px-6">
+          <h2 className="font-semibold tracking-tight">Review answers</h2>
+          <span className="font-mono text-xs text-muted-foreground">
+            {correct} of {total} right
+          </span>
+        </div>
+        <ol className="divide-y" data-testid="review">
+          {questions.map((q, i) => {
+            const answer = answers[i]
+            const right = answer === q.correct
+            return (
+              <li key={i} className="flex gap-4 px-5 py-5 sm:px-6">
+                <span
+                  className={cn(
+                    "mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full",
+                    right ? "bg-success/15 text-success" : answer === null ? "bg-muted text-muted-foreground" : "bg-destructive/15 text-destructive"
+                  )}
+                >
+                  {right ? <CheckIcon className="size-3.5" /> : answer === null ? <TimerOffIcon className="size-3.5" /> : <XIcon className="size-3.5" />}
+                </span>
+                <div className="min-w-0 flex-1 space-y-1.5 text-sm">
+                  <p className="font-medium text-pretty">
+                    <span className="mr-1.5 font-mono text-xs text-muted-foreground">{String(i + 1).padStart(2, "0")}</span>
+                    {q.question}
+                  </p>
+                  {right ? (
+                    <p className="text-muted-foreground">Your answer: {answer}</p>
+                  ) : (
+                    <>
+                      <p className="text-muted-foreground">
+                        {answer === null ? (
+                          "No answer (time ran out)"
+                        ) : (
+                          <>
+                            Your answer: <span className="text-destructive line-through decoration-destructive/40">{answer}</span>
+                          </>
+                        )}
+                      </p>
+                      <p className="text-muted-foreground">
+                        Correct answer: <span className="font-medium text-foreground">{q.correct}</span>
+                      </p>
+                    </>
+                  )}
+                  <Explanation question={q} answer={answer} onLocked={() => setSubscribeOpen(true)} />
+                </div>
+              </li>
+            )
+          })}
+        </ol>
       </Card>
       <SubscribeDialog open={subscribeOpen} onOpenChange={setSubscribeOpen} />
     </div>
@@ -147,7 +176,10 @@ function Explanation({ question, answer, onLocked }: ExplanationProps) {
 
   if (state.status === "done") {
     return (
-      <p className="mt-2 flex gap-2 rounded-lg bg-muted px-3 py-2.5 text-foreground" data-testid="explanation">
+      <p
+        className="mt-2 flex animate-in gap-2 rounded-xl border border-primary/20 bg-primary/[0.05] px-3.5 py-3 leading-relaxed text-foreground duration-300 fade-in-0"
+        data-testid="explanation"
+      >
         <SparklesIcon className="mt-0.5 size-3.5 shrink-0 text-primary" aria-label="AI explanation" />
         <span>{state.text}</span>
       </p>
@@ -178,9 +210,9 @@ function Explanation({ question, answer, onLocked }: ExplanationProps) {
 
 function Stat({ label, value, className }: { label: string; value: number; className?: string }) {
   return (
-    <div className="px-2 py-4">
-      <dd className={cn("text-2xl font-semibold tabular-nums", className)}>{value}</dd>
-      <dt className="text-xs text-muted-foreground">{label}</dt>
+    <div className="px-2 py-5">
+      <dd className={cn("text-3xl font-semibold tracking-tight tabular-nums", className)}>{value}</dd>
+      <dt className="mt-0.5 font-mono text-[0.65rem] tracking-wider text-muted-foreground uppercase">{label}</dt>
     </div>
   )
 }

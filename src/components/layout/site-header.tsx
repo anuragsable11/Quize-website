@@ -1,6 +1,6 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Link, NavLink, useNavigate } from "react-router"
-import { ChartLineIcon, LogOutIcon, MenuIcon, UserRoundIcon } from "lucide-react"
+import { ArrowRightIcon, ChartLineIcon, LogOutIcon, MenuIcon, UserRoundIcon } from "lucide-react"
 import { toast } from "sonner"
 import { Logo } from "@/components/logo"
 import { ThemeToggle } from "@/components/theme-toggle"
@@ -29,6 +29,7 @@ export function SiteHeader() {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
   const [menuOpen, setMenuOpen] = useState(false)
+  const scrolled = useScrolled()
 
   const handleLogout = () => {
     logout()
@@ -38,13 +39,19 @@ export function SiteHeader() {
   }
 
   return (
-    <header className="sticky top-0 z-40 border-b bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/70">
-      <div className="mx-auto flex h-14 max-w-6xl items-center gap-6 px-4 sm:px-6">
+    <header
+      data-scrolled={scrolled}
+      className="sticky top-0 z-40 border-b border-transparent transition-[background-color,border-color,backdrop-filter] duration-300 data-[scrolled=true]:border-border/70 data-[scrolled=true]:bg-background/70 data-[scrolled=true]:backdrop-blur-xl"
+    >
+      <div className="relative mx-auto flex h-16 max-w-6xl items-center gap-6 px-4 sm:px-6">
         <Link to="/" aria-label="Quizverse home" className="rounded-md focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none">
           <Logo />
         </Link>
 
-        <nav aria-label="Main" className="hidden items-center gap-1 md:flex">
+        <nav
+          aria-label="Main"
+          className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-0.5 rounded-full border bg-background/60 p-1 shadow-xs backdrop-blur-md md:flex"
+        >
           {NAV_LINKS.map((link) => (
             <NavLink
               key={link.to}
@@ -52,8 +59,8 @@ export function SiteHeader() {
               end={link.end}
               className={({ isActive }) =>
                 cn(
-                  "rounded-md px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground",
-                  isActive && "bg-muted text-foreground"
+                  "rounded-full px-4 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground",
+                  isActive && "bg-foreground/[0.06] text-foreground dark:bg-foreground/10"
                 )
               }
             >
@@ -62,7 +69,7 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        <div className="ml-auto flex items-center gap-2">
+        <div className="ml-auto flex items-center gap-1.5">
           <ThemeToggle />
 
           {user ? (
@@ -72,7 +79,7 @@ export function SiteHeader() {
                   type="button"
                   aria-label="Account menu"
                   data-testid="account-menu"
-                  className="rounded-full focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
+                  className="rounded-full ring-2 ring-transparent transition-shadow hover:ring-primary/30 focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
                 >
                   <UserAvatar name={user.name} src={user.profileImage} />
                 </button>
@@ -96,19 +103,21 @@ export function SiteHeader() {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <div className="hidden items-center gap-2 sm:flex">
-              <Button variant="ghost" asChild>
+            <div className="hidden items-center gap-1.5 sm:flex">
+              <Button variant="ghost" asChild className="rounded-full px-3.5">
                 <Link to="/login">Log in</Link>
               </Button>
-              <Button asChild>
-                <Link to="/signup">Sign up</Link>
+              <Button asChild className="rounded-full pr-3 pl-4">
+                <Link to="/signup">
+                  Sign up <ArrowRightIcon data-icon="inline-end" />
+                </Link>
               </Button>
             </div>
           )}
 
           <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="md:hidden" aria-label="Open menu">
+              <Button variant="ghost" size="icon" className="rounded-full md:hidden" aria-label="Open menu">
                 <MenuIcon />
               </Button>
             </SheetTrigger>
@@ -171,4 +180,16 @@ export function SiteHeader() {
       </div>
     </header>
   )
+}
+
+/** Whether the page has scrolled away from the top, so the header can gain its backdrop. */
+function useScrolled() {
+  const [scrolled, setScrolled] = useState(false)
+  useEffect(() => {
+    const update = () => setScrolled(window.scrollY > 8)
+    update()
+    window.addEventListener("scroll", update, { passive: true })
+    return () => window.removeEventListener("scroll", update)
+  }, [])
+  return scrolled
 }

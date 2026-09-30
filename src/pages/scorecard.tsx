@@ -2,6 +2,7 @@ import { useMemo } from "react"
 import { Link } from "react-router"
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts"
 import { ArrowRightIcon, ChartLineIcon, CircleHelpIcon, InfoIcon, SettingsIcon, TargetIcon, TrophyIcon } from "lucide-react"
+import { Eyebrow } from "@/components/page-header"
 import { UserAvatar } from "@/components/user-avatar"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Badge } from "@/components/ui/badge"
@@ -58,23 +59,28 @@ export default function ScorecardPage() {
   const name = user?.name ?? "Guest"
 
   return (
-    <div className="mx-auto max-w-6xl space-y-8 px-4 py-10 sm:px-6 md:py-14">
+    <div className="relative isolate mx-auto max-w-6xl space-y-8 px-4 py-10 sm:px-6 md:py-14">
+      <div
+        aria-hidden
+        className="absolute inset-x-0 -top-16 -z-10 h-96 bg-[radial-gradient(50%_60%_at_50%_0%,color-mix(in_oklch,var(--primary)_10%,transparent),transparent)]"
+      />
       {/* Header */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-        <UserAvatar name={name} src={user?.profileImage} className="size-14 text-lg" />
-        <div className="min-w-0 flex-1">
-          <h1 className="truncate text-2xl font-semibold tracking-tight" data-testid="scorecard-name">{name}</h1>
+      <div className="flex flex-col gap-5 sm:flex-row sm:items-end">
+        <UserAvatar name={name} src={user?.profileImage} className="size-16 text-xl ring-4 ring-primary/10 ring-offset-2 ring-offset-background" />
+        <div className="min-w-0 flex-1 space-y-1.5">
+          <Eyebrow>Scorecard</Eyebrow>
+          <h1 className="truncate text-3xl font-semibold tracking-tight sm:text-4xl" data-testid="scorecard-name">{name}</h1>
           <p className="truncate text-sm text-muted-foreground">{user ? user.email : "Guest scores saved in this browser"}</p>
         </div>
         <div className="flex gap-2">
           {user && (
-            <Button variant="outline" asChild className="h-9">
+            <Button variant="outline" asChild className="h-10 rounded-xl px-4">
               <Link to="/profile">
                 <SettingsIcon data-icon="inline-start" /> Profile settings
               </Link>
             </Button>
           )}
-          <Button asChild className="h-9">
+          <Button asChild className="h-10 rounded-xl px-4">
             <Link to="/quiz">
               Play a quiz <ArrowRightIcon data-icon="inline-end" />
             </Link>
@@ -104,13 +110,13 @@ export default function ScorecardPage() {
       </div>
 
       {attempts.length === 0 ? (
-        <Card className="items-center gap-3 py-14 text-center" data-testid="empty-state">
-          <div className="flex size-11 items-center justify-center rounded-full bg-muted">
-            <ChartLineIcon className="size-5 text-muted-foreground" />
+        <Card className="items-center gap-3 py-16 text-center" data-testid="empty-state">
+          <div className="flex size-14 items-center justify-center rounded-2xl bg-primary/10 text-primary ring-8 ring-primary/[0.04]">
+            <ChartLineIcon className="size-6" />
           </div>
           <CardTitle className="font-semibold">No quizzes yet</CardTitle>
           <CardDescription className="max-w-sm">Finish a quiz and your results will show up here, with a chart of your progress.</CardDescription>
-          <Button asChild className="mt-2 h-9">
+          <Button asChild className="mt-3 h-10 rounded-xl px-5">
             <Link to="/quiz">Play your first quiz</Link>
           </Button>
         </Card>
@@ -172,7 +178,7 @@ export default function ScorecardPage() {
             </CardHeader>
             <CardContent className="px-2 sm:px-6">
               <Table data-testid="attempts-table">
-                <TableHeader>
+                <TableHeader className="[&_th]:font-mono [&_th]:text-[0.7rem] [&_th]:tracking-wider [&_th]:text-muted-foreground [&_th]:uppercase">
                   <TableRow>
                     <TableHead className="w-10">#</TableHead>
                     <TableHead>Date</TableHead>
@@ -222,11 +228,13 @@ function StatCard({ icon: Icon, label, value }: { icon: React.ComponentType<{ cl
   return (
     <Card className="gap-2 py-5">
       <CardContent className="px-5">
-        <div className="flex items-center justify-between text-sm text-muted-foreground">
-          {label}
-          <Icon className="size-4" />
+        <div className="flex items-center justify-between">
+          <span className="font-mono text-[0.7rem] tracking-wider text-muted-foreground uppercase">{label}</span>
+          <span className="flex size-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
+            <Icon className="size-4" />
+          </span>
         </div>
-        <p className="mt-2 text-2xl font-semibold tracking-tight tabular-nums">{value}</p>
+        <p className="mt-3 text-3xl font-semibold tracking-tight tabular-nums">{value}</p>
       </CardContent>
     </Card>
   )

@@ -51,7 +51,7 @@ export default function SignupPage() {
       <form onSubmit={onSubmit} className="grid gap-4">
         <div className="grid gap-2">
           <Label htmlFor="name">Name</Label>
-          <Input id="name" autoComplete="name" required value={name} onChange={(e) => setName(e.target.value)} className="h-9" />
+          <Input id="name" autoComplete="name" required value={name} onChange={(e) => setName(e.target.value)} className="h-11 rounded-xl px-3.5" />
         </div>
         <div className="grid gap-2">
           <Label htmlFor="email">Email</Label>
@@ -63,7 +63,7 @@ export default function SignupPage() {
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="h-9"
+            className="h-11 rounded-xl px-3.5"
           />
         </div>
         <div className="grid gap-2">
@@ -77,7 +77,7 @@ export default function SignupPage() {
             aria-describedby="password-hint"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="h-9"
+            className="h-11 rounded-xl px-3.5"
           />
           <p id="password-hint" className="text-xs text-muted-foreground">
             At least 6 characters.
@@ -89,7 +89,7 @@ export default function SignupPage() {
             <AlertDescription>{error}</AlertDescription>
           </Alert>
         )}
-        <Button type="submit" className="h-9 w-full">
+        <Button type="submit" className="h-11 w-full rounded-xl text-[0.95rem]">
           Create account
         </Button>
         <p className="text-center text-xs text-muted-foreground">

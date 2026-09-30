@@ -69,7 +69,7 @@ export default function LoginPage() {
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="h-9"
+            className="h-11 rounded-xl px-3.5"
           />
         </div>
         <div className="grid gap-2">
@@ -81,7 +81,7 @@ export default function LoginPage() {
             required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="h-9"
+            className="h-11 rounded-xl px-3.5"
           />
         </div>
         {error && (
@@ -90,7 +90,7 @@ export default function LoginPage() {
             <AlertDescription>{error}</AlertDescription>
           </Alert>
         )}
-        <Button type="submit" className="h-9 w-full">
+        <Button type="submit" className="h-11 w-full rounded-xl text-[0.95rem]">
           Log in
         </Button>
       </form>

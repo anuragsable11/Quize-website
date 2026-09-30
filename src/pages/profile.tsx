@@ -2,6 +2,7 @@ import { useRef, useState, type FormEvent } from "react"
 import { Link, Navigate } from "react-router"
 import { AlertCircleIcon, UploadIcon } from "lucide-react"
 import { toast } from "sonner"
+import { PageHeader } from "@/components/page-header"
 import { UserAvatar } from "@/components/user-avatar"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
@@ -59,27 +60,24 @@ function ProfileForm() {
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-10 sm:px-6 md:py-14">
-      <div className="mb-8">
-        <h1 className="text-2xl font-semibold tracking-tight">Profile settings</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Update the name and photo shown on your scorecard.</p>
-      </div>
+      <PageHeader eyebrow="Account" title="Profile settings" description="Update the name and photo shown on your scorecard." className="mb-8" />
 
       <form onSubmit={onSubmit}>
-        <Card className="gap-6 py-6">
+        <Card className="gap-6 pt-6">
           <CardHeader className="px-6">
             <CardTitle className="font-semibold">Your profile</CardTitle>
             <CardDescription>Changes are saved to this browser.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6 px-6">
             <div className="flex items-center gap-5">
-              <UserAvatar name={name || user!.name} src={photo} className="size-20 text-xl" />
+              <UserAvatar name={name || user!.name} src={photo} className="size-20 text-xl ring-4 ring-primary/10 ring-offset-2 ring-offset-card" />
               <div className="space-y-2">
                 <div className="flex flex-wrap gap-2">
-                  <Button type="button" variant="outline" className="h-9" onClick={() => fileInput.current?.click()}>
+                  <Button type="button" variant="outline" className="h-9 rounded-lg" onClick={() => fileInput.current?.click()}>
                     <UploadIcon data-icon="inline-start" /> Upload photo
                   </Button>
                   {photo && (
-                    <Button type="button" variant="ghost" className="h-9" onClick={() => setPhoto(undefined)}>
+                    <Button type="button" variant="ghost" className="h-9 rounded-lg" onClick={() => setPhoto(undefined)}>
                       Remove
                     </Button>
                   )}
@@ -102,11 +100,11 @@ function ProfileForm() {
 
             <div className="grid gap-2">
               <Label htmlFor="name">Name</Label>
-              <Input id="name" value={name} onChange={(e) => setName(e.target.value)} autoComplete="name" className="h-9" required />
+              <Input id="name" value={name} onChange={(e) => setName(e.target.value)} autoComplete="name" className="h-11 rounded-xl px-3.5" required />
             </div>
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" value={user!.email} disabled className="h-9" />
+              <Input id="email" value={user!.email} disabled className="h-11 rounded-xl px-3.5" />
               <p className="text-xs text-muted-foreground">Your email is used to sign in and can't be changed.</p>
             </div>
 
@@ -118,10 +116,10 @@ function ProfileForm() {
             )}
           </CardContent>
           <CardFooter className="justify-end gap-2 px-6 py-4">
-            <Button type="button" variant="ghost" asChild className="h-9">
+            <Button type="button" variant="ghost" asChild className="h-10 rounded-xl px-4">
               <Link to="/scorecard">Back to scorecard</Link>
             </Button>
-            <Button type="submit" className="h-9" disabled={!dirty}>
+            <Button type="submit" className="h-10 rounded-xl px-5" disabled={!dirty}>
               Save changes
             </Button>
           </CardFooter>

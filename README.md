@@ -24,7 +24,7 @@
 - [Tailwind CSS v4](https://tailwindcss.com/) and [shadcn/ui](https://ui.shadcn.com/) components (Radix primitives)
 - [React Router](https://reactrouter.com/) for pages, [Recharts](https://recharts.org/) (via shadcn charts) for the score history
 - [lucide](https://lucide.dev/) icons, [Sonner](https://sonner.emilkowal.ski/) toasts, [next-themes](https://github.com/pacocoursey/next-themes) for dark mode
-- [Geist](https://vercel.com/font) font, self-hosted via Fontsource
+- [Geist](https://vercel.com/font), Geist Mono and [Instrument Serif](https://fonts.google.com/specimen/Instrument+Serif) fonts, self-hosted via Fontsource
 - AI: [Hugging Face Inference Providers](https://huggingface.co/docs/inference-providers) (default model [`openai/gpt-oss-120b`](https://huggingface.co/openai/gpt-oss-120b)), called from [Vercel Functions](https://vercel.com/docs/functions) in `api/`
 
 ## Getting started
@@ -127,7 +127,8 @@ Because everything is stored in the browser, accounts only exist on the device w
 
 - **Name:** Quizverse (one word, capital Q). **Tagline:** A universe of trivia.
 - **Logo:** `public/logo.svg`, a "Q" drawn as an orbit ring with a satellite, on an indigo tile. In React use `<Logo />` or `<LogoMark />` from `src/components/logo.tsx`.
-- **Font:** Geist.
+- **Fonts:** Geist for the interface, Geist Mono for labels and numbers, and Instrument Serif (italic) for accent words in large headings. All self-hosted via Fontsource.
+- **Motif:** the logo's orbit, drawn as tilted rings with moving satellites (`src/components/orbit-art.tsx`). Satellites stay still for visitors who prefer reduced motion.
 - **Colours** (CSS variables in `src/index.css`; neutrals come from shadcn's neutral palette):
 
 | Role    | Light                   | Dark                    | Variable      |
